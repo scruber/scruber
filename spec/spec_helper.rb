@@ -1,5 +1,9 @@
 require "bundler/setup"
 require "crawley"
+require 'webmock/rspec'
+
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -11,4 +15,14 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  # Use color in STDOUT
+  config.color = true
+
+  # Use color not only in STDOUT but also in pagers and files
+  config.tty = true
+
+  # Use the specified formatter
+  config.formatter = :progress # :documentation, :html, :textmate
+
 end
