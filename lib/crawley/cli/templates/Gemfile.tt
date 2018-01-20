@@ -1,0 +1,6 @@
+source "https://rubygems.org"
+
+gem 'crawley'
+<% if @queue_name == 'mongo' %>
+gem 'crawley-mongo'
+<% end %>
