@@ -1,4 +1,4 @@
  #!/usr/bin/env ruby
  require "crawley/cli"
 
- Crawley::CLI.start(ARGV)
+ Crawley::CLI::Root.start(ARGV)
