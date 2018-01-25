@@ -4,8 +4,8 @@ module Crawley
       def initialize(options={})
         @callbacks_options = {}
         @callbacks = {}
-        @queue = Crawley::QueueDriver[::Crawley.configuration.queue_driver].new(::Crawley.configuration.queue_driver_options)
-        @fetcher = Crawley::Fetcher[::Crawley.configuration.fetcher].new(::Crawley.configuration.fetcher_options)
+        @queue = Crawley::QueueDriver[::Crawley.configuration.queue_driver].new(::Crawley.configuration.queue_options)
+        @fetcher = Crawley::Fetcher[::Crawley.configuration.fetcher_driver].new(::Crawley.configuration.fetcher_options)
       end
 
       # 
@@ -58,5 +58,3 @@ module Crawley
     end
   end
 end
-
-Crawley::QueueDriver.add(:simple, Crawley::QueueDriver::Simple)

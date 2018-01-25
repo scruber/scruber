@@ -2,10 +2,11 @@ require 'typhoeus'
 module Crawley
   module Fetcher
     class TyphoeusFetcher
-      attr_accessor :options, # passed options
+      # Available options for this fetcher
+      attr_accessor :options, # all passed options
                     :max_concurrency, # max concurrency for Hydra
-                    :proxy, # Typhoeus proxy url. example: 'http://proxyhere.com:5000'
-                    :proxyuserpwd, # Typhoeus proxy password. example: 'user:passhere'
+                    :proxy, # Typhoeus proxy url. example: 'http://localhost:5000'
+                    :proxyuserpwd, # Typhoeus proxy password. example: 'user:password'
                     :request_timeout # Request timeout for Typhoeus
 
       def initialize(options={})
@@ -25,9 +26,10 @@ module Crawley
         end
         if hydra.queued_requests.count > 0
           hydra.run
+        else
+          sleep 1
         end
       end
-
 
       def build_request(page)
         request_options = {

@@ -1,13 +1,13 @@
 module Crawley
   module Core
     class Configuration
-      attr_accessor :fetcher, :queue_driver, :fetcher_options, :queue_driver_options
+      attr_accessor :fetcher_driver, :queue_driver, :fetcher_options, :queue_options
 
       def initialize
-        @fetcher = :typhoeus_fetcher
+        @fetcher_driver = :typhoeus_fetcher
         @queue_driver = :simple
         @fetcher_options = {}
-        @queue_driver_options = {}
+        @queue_options = {}
       end
 
       # class << self

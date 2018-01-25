@@ -104,3 +104,5 @@ module Crawley
     end
   end
 end
+
+Crawley::QueueDriver.add(:simple, Crawley::QueueDriver::Simple)

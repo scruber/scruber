@@ -8,12 +8,12 @@ RSpec.describe Crawley do
   describe "configurable" do
     before do
       Crawley.configure do |config|
-        config.fetcher = :typhoeus_fetcher
+        config.fetcher_driver = :typhoeus_fetcher
       end
     end
     
     it "returns :typhoeus_fetcher as fetcher" do
-      expect(Crawley.configuration.fetcher).to eq(:typhoeus_fetcher)
+      expect(Crawley.configuration.fetcher_driver).to eq(:typhoeus_fetcher)
     end
   end
 
