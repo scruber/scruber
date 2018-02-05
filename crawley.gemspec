@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "typhoeus", "~> 1.1.0"
+  spec.add_dependency "pickup", "0.0.11"
   spec.add_dependency "nokogiri", "~> 1.8.0"
   spec.add_runtime_dependency "thor"
   spec.add_development_dependency "bundler", "~> 1.15"

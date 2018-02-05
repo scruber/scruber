@@ -1,5 +1,6 @@
 require "crawley/version"
 require 'nokogiri'
+require 'pickup'
 
 require "crawley/fetcher"
 require "crawley/fetcher/typhoeus_fetcher"
@@ -20,6 +21,7 @@ require "crawley/core/extensions/loop"
 # require "crawley/core/configuration"
 
 module Crawley
+  class ArgumentError < ::ArgumentError; end
   module Core
     autoload :Configuration, "crawley/core/configuration"
     autoload :Crawler,       "crawley/core/crawler"
@@ -27,6 +29,7 @@ module Crawley
 
   module Helpers
     autoload :UserAgentRotator,   "crawley/helpers/user_agent_rotator"
+    autoload :ProxyRotator,       "crawley/helpers/proxy_rotator"
     autoload :DictionaryReader,   "crawley/helpers/dictionary_reader"
     module DictionaryReader
       autoload :Xml,              "crawley/helpers/dictionary_reader/xml"
@@ -47,7 +50,6 @@ module Crawley
     end
 
     def configure(&block)
-      # Core::Configuration.configure(&block)
       yield configuration
     end
   end
