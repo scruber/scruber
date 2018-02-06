@@ -7,8 +7,8 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
       described_class.configure do
         set_mode :random
 
-        add_proxy "127.0.0.1:3000"
-        add_proxy "127.0.0.1", port: 3001
+        add "127.0.0.1:3000"
+        add "127.0.0.1", port: 3001
       end
     end
     
@@ -36,8 +36,8 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
         clean
         set_mode :round_robin
 
-        add_proxy "127.0.0.1:3000"
-        add_proxy "127.0.0.1", port: 3001
+        add "127.0.0.1:3000"
+        add "127.0.0.1", port: 3001
       end
       expect(described_class.configuration.proxy_keys.sort).to eq(["127.0.0.1:3000", "127.0.0.1:3001"].sort)
     end
@@ -47,12 +47,12 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
         clean
         set_mode :round_robin
 
-        add_proxy "127.0.0.1:3000"
-        add_proxy "127.0.0.1", port: 3001
+        add "127.0.0.1:3000"
+        add "127.0.0.1", port: 3001
       end
       expect(described_class.configuration.proxy_keys.sort).to eq(["127.0.0.1:3000", "127.0.0.1:3001"].sort)
       described_class.configure do
-        add_proxy "127.0.0.5:3000"
+        add "127.0.0.5:3000"
       end
       expect(described_class.configuration.proxy_keys.sort).to eq(["127.0.0.1:3000", "127.0.0.1:3001", "127.0.0.5:3000"].sort)
     end
@@ -64,9 +64,9 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
         clean
         set_mode :round_robin
 
-        add_proxy "127.0.0.1:3000"
-        add_proxy "127.0.0.2:3000"
-        add_proxy "127.0.0.3:3000"
+        add "127.0.0.1:3000"
+        add "127.0.0.2:3000"
+        add "127.0.0.3:3000"
       end
     end
 
@@ -85,9 +85,9 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
         clean
         set_mode :random
 
-        add_proxy "127.0.0.1:3000"
-        add_proxy "127.0.0.2:3000"
-        add_proxy "127.0.0.3:3000"
+        add "127.0.0.1:3000"
+        add "127.0.0.2:3000"
+        add "127.0.0.3:3000"
       end
     end
 
@@ -100,9 +100,9 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
         clean
         set_mode :random
 
-        add_proxy "127.0.0.1:3000", probability: 0.9
-        add_proxy "127.0.0.2:3000", probability: 0.05
-        add_proxy "127.0.0.3:3000", probability: 0.05
+        add "127.0.0.1:3000", probability: 0.9
+        add "127.0.0.2:3000", probability: 0.05
+        add "127.0.0.3:3000", probability: 0.05
       end
       expect(100.times.map{ described_class.next.host }.select{|h| h == '127.0.0.1'}.count).to be > 75
     end

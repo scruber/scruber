@@ -5,6 +5,11 @@ require 'webmock/rspec'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
+Crawley::Helpers::UserAgentRotator.configure do
+  add "Crawley 1.0", tags: [:robot, :crawley]
+  add "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36", tags: [:desktop, :chrome, :macos]
+end
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"

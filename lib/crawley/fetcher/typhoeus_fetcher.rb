@@ -52,7 +52,7 @@ module Crawley
         if page.user_agent
           request_options[:headers] = {"User-Agent" => page.user_agent, 'Accept-Charset' => 'utf-8'}
         else
-          request_options[:headers] = {"User-Agent" => Crawley::Helpers::UserAgentRotator.random, 'Accept-Charset' => 'utf-8'}
+          request_options[:headers] = {"User-Agent" => Crawley::Helpers::UserAgentRotator.next, 'Accept-Charset' => 'utf-8'}
         end
 
         request = Typhoeus::Request.new(page[:url], request_options)

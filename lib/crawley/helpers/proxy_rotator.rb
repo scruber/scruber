@@ -23,7 +23,7 @@ module Crawley
 
       class Configuration
         include Crawley::Core::Extensions::Loop::CoreMethods
-        
+
         AVAILABLE_MODES=[:random, :round_robin]
 
         attr_reader :mode, :proxies, :proxy_keys, :pickup
@@ -44,7 +44,7 @@ module Crawley
           @proxies = {}
         end
 
-        def add_proxy(proxy_address, options={})
+        def add(proxy_address, options={})
           proxy = Proxy.new(proxy_address, options)
           @proxies[proxy.id] = proxy
         end
@@ -80,8 +80,8 @@ module Crawley
           configuration.configure(&block)
         end
 
-        def next
-          raise Crawley::ArgumentError.new("Proxy rotator was not configured") if @configuration.nil?
+        def next(options={})
+          raise Crawley::ArgumentError.new("Proxy rotator not configured") if @configuration.nil?
           if @configuration.mode == :random
             @configuration.pickup.pick
           else
