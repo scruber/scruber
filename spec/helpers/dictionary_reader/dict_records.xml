@@ -1,0 +1,5 @@
+<records>
+  <record r10="true" country="US" state="NY" postal_code="10001" />
+  <record r10="false" country="US" state="WI" postal_code="54914" />
+  <record r10="true" country="US" state="NY" postal_code="10002" />
+</records>

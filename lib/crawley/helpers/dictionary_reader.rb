@@ -13,8 +13,8 @@ module Crawley
         end
 
         def add(label, claz)
-          unless claz.respond_to?(:read)
-            raise NoMethodError, "process is not declared in the #{label.inspect}"
+          unless claz.instance_methods.include?(:read)
+            raise NoMethodError, "read is not declared in the #{claz.inspect}"
           end
 
           _registered_types[label] = claz

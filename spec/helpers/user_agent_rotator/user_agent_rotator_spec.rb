@@ -3,38 +3,77 @@ require "spec_helper"
 RSpec.describe Crawley::Helpers::UserAgentRotator do
 
   describe "configurable" do
-    before do
-      described_class.configure do
-        clean
-        set_filter :all
+    context "with block" do
+      before do
+        described_class.configure do
+          clean
+          set_filter :all
 
-        add "Crawley 1.0", tags: [:robot, :crawley]
-        add "GoogleBot 1.0", tags: [:robot, :google]
-        add "Chrome 1.0", tags: [:desktop, :chrome]
-        add "Android 1.0", tags: [:mobile, :android]
+          add "Crawley 1.0", tags: [:robot, :crawley]
+          add "GoogleBot 1.0", tags: [:robot, :google]
+          add "Chrome 1.0", tags: [:desktop, :chrome]
+          add "Android 1.0", tags: [:mobile, :android]
+        end
+      end
+      
+      it "adds 4 user agents to list" do
+        expect(described_class.configuration.user_agents.count).to eq(4)
+      end
+
+      it "clean proxies list" do
+        described_class.configure do
+          clean
+        end
+        expect(described_class.configuration.user_agents.count).to eq(0)
+      end
+
+      it "should have all filter by default" do
+        expect(described_class.configuration.tags).to eq(:all)
+      end
+
+      it "should set different filter" do
+        described_class.configure do
+          set_filter :desktop
+        end
+        expect(described_class.configuration.tags).to eq(:desktop)
       end
     end
-    
-    it "adds 4 user agents to list" do
-      expect(described_class.configuration.user_agents.count).to eq(4)
-    end
 
-    it "clean proxies list" do
-      described_class.configure do
-        clean
+    context "with dictionary" do
+      before do
+        Crawley::Core::Extensions::Loop.add_dictionary(:default_user_agents, File.expand_path(File.dirname(__FILE__))+'/user_agents.xml', :xml)
+        
+        described_class.configure do
+          clean
+          set_filter :all
+
+          loop :default_user_agents do |ua|
+            add ua['name'], tags: ua['tags'].split(',').map(&:strip)
+          end
+        end
       end
-      expect(described_class.configuration.user_agents.count).to eq(0)
-    end
-
-    it "should have all filter by default" do
-      expect(described_class.configuration.tags).to eq(:all)
-    end
-
-    it "should set different filter" do
-      described_class.configure do
-        set_filter :desktop
+      
+      it "adds 4 user agents to list" do
+        expect(described_class.configuration.user_agents.count).to eq(4)
       end
-      expect(described_class.configuration.tags).to eq(:desktop)
+
+      it "clean proxies list" do
+        described_class.configure do
+          clean
+        end
+        expect(described_class.configuration.user_agents.count).to eq(0)
+      end
+
+      it "should have all filter by default" do
+        expect(described_class.configuration.tags).to eq(:all)
+      end
+
+      it "should set different filter" do
+        described_class.configure do
+          set_filter :desktop
+        end
+        expect(described_class.configuration.tags).to eq(:desktop)
+      end
     end
   end
 

@@ -14,7 +14,7 @@ module Crawley
 
         def add(label, claz)
           unless claz.respond_to?(:process)
-            raise NoMethodError, "process is not declared in the #{label.inspect}"
+            raise NoMethodError, "process is not declared in the #{claz.inspect}"
           end
 
           _registered_formats[label] = claz

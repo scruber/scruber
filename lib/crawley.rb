@@ -33,6 +33,7 @@ module Crawley
     autoload :DictionaryReader,   "crawley/helpers/dictionary_reader"
     module DictionaryReader
       autoload :Xml,              "crawley/helpers/dictionary_reader/xml"
+      autoload :Csv,              "crawley/helpers/dictionary_reader/csv"
     end
   end
 

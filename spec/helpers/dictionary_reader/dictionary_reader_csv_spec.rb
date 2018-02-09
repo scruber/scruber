@@ -1,10 +1,10 @@
 require "spec_helper"
 
-RSpec.describe Crawley::Helpers::DictionaryReader::Xml do
+RSpec.describe Crawley::Helpers::DictionaryReader::Csv do
 
   describe "register" do
     it "should correctly read first element" do
-      cl = described_class.new(File.expand_path(File.dirname(__FILE__))+'/dict.xml')
+      cl = described_class.new(File.expand_path(File.dirname(__FILE__))+'/dict.csv')
 
       result = nil
       cl.read do |obj|
@@ -13,18 +13,8 @@ RSpec.describe Crawley::Helpers::DictionaryReader::Xml do
       expect(result.sort).to eq({"r10"=>"true", "country"=>"US", "state"=>"NY", "postal_code"=>"10002"}.sort)
     end
 
-    it "should correctly read first element with different selector" do
-      cl = described_class.new(File.expand_path(File.dirname(__FILE__))+'/dict_records.xml')
-
-      result = nil
-      cl.read(selector: 'record') do |obj|
-        result = obj
-      end
-      expect(result.sort).to eq({"r10"=>"true", "country"=>"US", "state"=>"NY", "postal_code"=>"10002"}.sort)
-    end
-
     it "should read 3 elements total" do
-      cl = described_class.new(File.expand_path(File.dirname(__FILE__))+'/dict.xml')
+      cl = described_class.new(File.expand_path(File.dirname(__FILE__))+'/dict.csv')
 
       count = 0
       cl.read do |obj|
@@ -34,7 +24,7 @@ RSpec.describe Crawley::Helpers::DictionaryReader::Xml do
     end
 
     it "should read 1 elements with state=WI" do
-      cl = described_class.new(File.expand_path(File.dirname(__FILE__))+'/dict.xml')
+      cl = described_class.new(File.expand_path(File.dirname(__FILE__))+'/dict.csv')
 
       results = []
       cl.read({state: 'WI'}) do |obj|
