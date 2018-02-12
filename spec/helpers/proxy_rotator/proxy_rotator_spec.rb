@@ -74,6 +74,10 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
       expect(3.times.map{ described_class.next.host }.sort).to eq(["127.0.0.1", "127.0.0.2", "127.0.0.3"].sort)
     end
 
+    it "should return all 3 proxies for random method" do
+      expect(3.times.map{ described_class.random.host }.sort).to eq(["127.0.0.1", "127.0.0.2", "127.0.0.3"].sort)
+    end
+
     it "should return all 3 proxies twice" do
       expect(6.times.map{ described_class.next.host }.sort).to eq(["127.0.0.1", "127.0.0.2", "127.0.0.3", "127.0.0.1", "127.0.0.2", "127.0.0.3"].sort)
     end

@@ -1,6 +1,8 @@
 module Crawley
   module Core
     class Crawler
+      attr_reader :queue, :fetcher
+
       def initialize(options={})
         @callbacks_options = {}
         @callbacks = {}
@@ -23,14 +25,6 @@ module Crawley
             end
           end
         end
-      end
-
-      def queue
-        @queue
-      end
-
-      def fetcher
-        @fetcher
       end
 
       def parser(page_type, options={}, &block)

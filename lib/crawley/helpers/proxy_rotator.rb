@@ -93,6 +93,11 @@ module Crawley
             @configuration.proxies[@configuration.proxy_keys[@cursor]]
           end
         end
+        alias_method :random, :next
+
+        def configured?
+          !@configuration.nil? && !@configuration.proxies.empty?
+        end
       end
     end
   end
