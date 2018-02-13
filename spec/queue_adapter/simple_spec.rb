@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Crawley::QueueDriver::Simple do
+RSpec.describe Crawley::QueueAdapter::Simple do
   let(:queue){ described_class.new }
 
   it "queue page for downloading" do

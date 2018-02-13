@@ -5,9 +5,9 @@ require 'pickup'
 require "crawley/fetcher"
 require "crawley/fetcher/typhoeus_fetcher"
 
-require "crawley/queue_driver"
-require "crawley/queue_driver/base"
-require "crawley/queue_driver/simple"
+require "crawley/queue"
+require "crawley/queue_adapter/base"
+require "crawley/queue_adapter/simple"
 
 require "crawley/core/page_format"
 require "crawley/core/page_format/base"

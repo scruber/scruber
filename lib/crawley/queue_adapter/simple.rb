@@ -1,5 +1,5 @@
 module Crawley
-  module QueueDriver
+  module QueueAdapter
     class Simple < Base
       attr_reader :error_pages
 
@@ -105,4 +105,4 @@ module Crawley
   end
 end
 
-Crawley::QueueDriver.add(:simple, Crawley::QueueDriver::Simple)
+Crawley::Queue.add_adapter(:simple, Crawley::QueueAdapter::Simple)

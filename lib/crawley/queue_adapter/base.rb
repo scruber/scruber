@@ -1,5 +1,5 @@
 module Crawley
-  module QueueDriver
+  module QueueAdapter
     class Base
       def initialize(options={})
         @options = options
