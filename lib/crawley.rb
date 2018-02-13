@@ -3,11 +3,11 @@ require 'nokogiri'
 require 'pickup'
 
 require "crawley/fetcher"
-require "crawley/fetcher/typhoeus_fetcher"
+require "crawley/fetcher_adapter/typhoeus_fetcher"
 
 require "crawley/queue"
-require "crawley/queue_adapter/base"
-require "crawley/queue_adapter/simple"
+require "crawley/queue_adapter/abstract_adapter"
+require "crawley/queue_adapter/memory"
 
 require "crawley/core/page_format"
 require "crawley/core/page_format/base"

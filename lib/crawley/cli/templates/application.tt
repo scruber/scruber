@@ -3,8 +3,10 @@ require File.expand_path('../boot', __FILE__)
 Bundler.require(:default)
 
 Crawley.configure do |config|
-  config.fetcher_driver = :typhoeus_fetcher
+  config.fetcher_adapter = :typhoeus_fetcher
   config.fetcher_options = {}
-  config.queue_driver = :<%= options[:queue] %>
+  config.fetcher_agent_adapter = :<%= options[:fetcher_agent] %>
+  config.fetcher_agent_options = {}
+  config.queue_adapter = :<%= options[:queue] %>
   config.queue_options = {}
 end

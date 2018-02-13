@@ -1,6 +1,6 @@
 module Crawley
   module QueueAdapter
-    class Simple < Base
+    class Memory < AbstractAdapter
       attr_reader :error_pages
 
       class Page
@@ -105,4 +105,4 @@ module Crawley
   end
 end
 
-Crawley::Queue.add_adapter(:simple, Crawley::QueueAdapter::Simple)
+Crawley::Queue.add_adapter(:memory, Crawley::QueueAdapter::Memory)

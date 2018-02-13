@@ -1,6 +1,6 @@
 require 'typhoeus'
 module Crawley
-  module Fetcher
+  module FetcherAdapter
     class TyphoeusFetcher
       # Available options for this fetcher
       attr_accessor :options, # all passed options
@@ -123,4 +123,4 @@ module Crawley
   end
 end
 
-Crawley::Fetcher.add(:typhoeus_fetcher, Crawley::Fetcher::TyphoeusFetcher)
+Crawley::Fetcher.add_adapter(:typhoeus_fetcher, Crawley::FetcherAdapter::TyphoeusFetcher)

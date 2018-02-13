@@ -8,7 +8,8 @@ module Crawley
       include Thor::Actions
 
       argument :path
-      class_option :queue, :default => 'simple', :aliases => '-q'
+      class_option :queue, :default => 'memory', :aliases => '-q'
+      class_option :fetcher_agent, :default => 'memory', :aliases => '-fa'
 
       def self.source_root
         File.dirname(__FILE__) + '/templates'

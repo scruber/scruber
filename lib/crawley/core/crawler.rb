@@ -7,7 +7,7 @@ module Crawley
         @callbacks_options = {}
         @callbacks = {}
         @queue = Crawley::Queue.new
-        @fetcher = Crawley::Fetcher[::Crawley.configuration.fetcher_driver].new(::Crawley.configuration.fetcher_options)
+        @fetcher = Crawley::Fetcher.new
       end
 
       # 

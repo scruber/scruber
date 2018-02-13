@@ -1,6 +1,6 @@
 module Crawley
   module QueueAdapter
-    class Base
+    class AbstractAdapter
       def initialize(options={})
         @options = options
       end

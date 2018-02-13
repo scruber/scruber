@@ -1,20 +1,33 @@
 module Crawley
   module Fetcher
     class << self
-      def add(label, claz)
+      attr_writer :adapter
+
+      def new(options={})
+        adapter.new(::Crawley.configuration.fetcher_options.merge(options))
+      end
+
+      def adapter
+        unless @adapter
+          @adapter = ::Crawley.configuration.fetcher_adapter || _adapters.keys.first
+        end
+        raise Crawley::ArgumentError.new("Adapter not found") unless @adapter
+        _adapters[@adapter]
+      end
+
+      def add_adapter(label, claz)
         unless claz.method_defined?(:run)
           raise NoMethodError, "run is not declared in the #{label.inspect}"
         end
-
-        _registered_fetchers[label] = claz
+        _adapters[label] = claz
       end
 
       def [](label)
-        _registered_fetchers[label]
+        _adapters[label]
       end
 
-      def _registered_fetchers
-        @registered_fetchers ||= {}
+      def _adapters
+        @_adapters ||= {}
       end
     end
   end
