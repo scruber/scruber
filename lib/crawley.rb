@@ -1,13 +1,14 @@
 require "crawley/version"
 require 'nokogiri'
+require 'http-cookie'
 require 'pickup'
 
 require "crawley/fetcher"
-require "crawley/fetcher_adapter/typhoeus_fetcher"
+require "crawley/fetcher_adapters/typhoeus_fetcher"
 
 require "crawley/queue"
-require "crawley/queue_adapter/abstract_adapter"
-require "crawley/queue_adapter/memory"
+require "crawley/queue_adapters/abstract_adapter"
+require "crawley/queue_adapters/memory"
 
 require "crawley/core/page_format"
 require "crawley/core/page_format/base"
@@ -30,6 +31,11 @@ module Crawley
   module Helpers
     autoload :UserAgentRotator,   "crawley/helpers/user_agent_rotator"
     autoload :ProxyRotator,       "crawley/helpers/proxy_rotator"
+    autoload :FetcherAgent,       "crawley/helpers/fetcher_agent"
+    module FetcherAgentAdapters
+      autoload :AbstractAdapter,  "crawley/helpers/fetcher_agent_adapters/abstract_adapter"
+      autoload :Memory,           "crawley/helpers/fetcher_agent_adapters/memory"
+    end
     autoload :DictionaryReader,   "crawley/helpers/dictionary_reader"
     module DictionaryReader
       autoload :Xml,              "crawley/helpers/dictionary_reader/xml"

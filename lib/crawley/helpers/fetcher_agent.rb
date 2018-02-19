@@ -8,6 +8,10 @@ module Crawley
           adapter.new(::Crawley.configuration.fetcher_agent_options.merge(options))
         end
 
+        def find(id)
+          adapter.find(id)
+        end
+
         def adapter
           unless @adapter
             @adapter = ::Crawley.configuration.fetcher_agent_adapter || _adapters.keys.first

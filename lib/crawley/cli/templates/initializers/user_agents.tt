@@ -1,0 +1,10 @@
+# Crawley::Core::Extensions::Loop.add_dictionary(:user_agents, File.expand_path(File.dirname(__FILE__))+'/user_agents.xml', :xml)
+
+# Crawley::Helpers::UserAgentRotator.configure do
+#   clean
+#   set_filter :all
+
+#   loop :user_agents do |ua|
+#     add ua['name'], tags: ua['tags'].split(',').map(&:strip)
+#   end
+# end

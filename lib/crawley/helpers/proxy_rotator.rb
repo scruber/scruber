@@ -19,6 +19,22 @@ module Crawley
         def id
           (@host + ':' + @port.to_s)
         end
+
+        def address
+          @host + ':' + @port.to_s
+        end
+
+        def http?
+          @type == 'http'
+        end
+
+        def proxyuserpwd
+          if @user.nil? || @user.empty?
+            nil
+          else
+            "#{@user}:#{@password}"
+          end
+        end
       end
 
       class Configuration
