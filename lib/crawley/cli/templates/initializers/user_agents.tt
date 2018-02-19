@@ -1,10 +1,14 @@
 # Crawley::Core::Extensions::Loop.add_dictionary(:user_agents, File.expand_path(File.dirname(__FILE__))+'/user_agents.xml', :xml)
 
-# Crawley::Helpers::UserAgentRotator.configure do
-#   clean
-#   set_filter :all
+Crawley::Helpers::UserAgentRotator.configure do
+  clean
+  set_filter :all
+  
+  add "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36", tags: [:desktop, :modern, :chrome]
 
-#   loop :user_agents do |ua|
-#     add ua['name'], tags: ua['tags'].split(',').map(&:strip)
-#   end
-# end
+  # How to access proxy_list dictionary
+  # 
+  # loop :user_agents do |ua|
+  #   add ua['name'], tags: ua['tags'].split(',').map(&:strip)
+  # end
+end

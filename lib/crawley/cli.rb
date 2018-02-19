@@ -16,8 +16,8 @@ module Crawley
       desc 'start', 'Run scraper'
       def start(name)
         if defined?(APP_PATH)
-          raise ::Thor::Error, "ERROR: Crawley project not found." unless File.exist?(File.expand_path('config/application', Dir.pwd))
-          raise ::Thor::Error, "ERROR: Scraper not found." unless File.exist?(File.expand_path('./scrapers/'+name+'.rb', Dir.pwd))
+          # raise ::Thor::Error, "ERROR: Crawley project not found." unless File.exist?(File.expand_path('config/application', Dir.pwd))
+          raise ::Thor::Error, "ERROR: Scraper not found." unless File.exist?(File.expand_path('../../scrapers/'+name+'.rb', APP_PATH))
           say "booting..."
           require APP_PATH
           Dir[File.expand_path('../initializers/*.rb', APP_PATH)].sort.each do |i|
