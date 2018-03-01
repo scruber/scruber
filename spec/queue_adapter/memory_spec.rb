@@ -11,7 +11,7 @@ RSpec.describe Crawley::QueueAdapters::Memory do
   it "shift first enqueued page" do
     queue.add "http://example.com"
     queue.add "http://example2.com"
-    page = queue.shift_for_fetching
+    page = queue.fetch_pending
     expect(page.url).to eq("http://example.com")
   end
 end

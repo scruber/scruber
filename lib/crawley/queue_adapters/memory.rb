@@ -3,6 +3,18 @@ module Crawley
     class Memory < AbstractAdapter
       attr_reader :error_pages
 
+      class Page < Crawley::QueueAdapters::AbstractAdapter::Page
+        def save
+          if self.fetched_at > 0
+            @queue.add_downloaded self
+          elsif self.retry_count >= self.max_retry_times.to_i
+            @queue.add_error_page self
+          else
+            @queue.push self
+          end
+        end
+      end
+
       def initialize(options={})
         super(options)
         @queue = []
@@ -23,19 +35,27 @@ module Crawley
         @queue.count
       end
 
-      def shift_for_parsing
-        @downloaded_pages.shift
+      def fetch_downloaded(count=nil)
+        if count.nil?
+          @downloaded_pages.shift
+        else
+          @downloaded_pages.shift(count)
+        end
       end
 
-      def shift_for_fetching
-        @queue.shift
+      def fetch_pending(count=nil)
+        if count.nil?
+          @queue.shift
+        else
+          @queue.shift(count)
+        end
       end
 
-      def push_for_parsing(page)
+      def add_downloaded(page)
         @downloaded_pages.push page
       end
 
-      def puts_error_page(page)
+      def add_error_page(page)
         @error_pages.push page
       end
 

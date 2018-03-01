@@ -1,25 +1,19 @@
 require 'typhoeus'
 module Crawley
   module FetcherAdapters
-    class TyphoeusFetcher
-      # Available options for this fetcher
-      attr_accessor :options, # all passed options
-                    :max_concurrency, # max concurrency for Hydra
-                    :proxy, # Typhoeus proxy url. example: 'http://localhost:5000'
-                    :proxyuserpwd, # Typhoeus proxy password. example: 'user:password'
-                    :request_timeout # Request timeout for Typhoeus
+    class TyphoeusFetcher < AbstractAdapter
+      attr_accessor :ssl_verifypeer,
+                    :ssl_verifyhost
 
       def initialize(options={})
-        @options = options
-        @max_concurrency = options.fetch(:max_concurrency) { 1 }
-        @proxy = options.fetch(:proxy) { nil }
-        @proxyuserpwd = options.fetch(:proxyuserpwd) { nil }
-        @request_timeout = options.fetch(:request_timeout) { 15 }
+        super(options)
+        @ssl_verifypeer = options.fetch(:ssl_verifypeer) { false }
+        @ssl_verifyhost = options.fetch(:ssl_verifyhost) { 0 }
+        @max_requests = options.fetch(:max_requests) { @max_concurrency * 10 }
       end
 
       def run(queue)
-        (1..@max_concurrency).each do
-          page = queue.shift_for_fetching
+        queue.fetch_pending(@max_requests).each do |page|
           request = build_request(page)
 
           hydra.queue(request)
@@ -32,28 +26,23 @@ module Crawley
       end
 
       def build_request(page)
+        page = before_request_callback(page)
         request_options = {
           method: page[:method],
           body: page[:body],
           # params: page[:params],
-          headers: page[:headers],
+          headers: headers_for(page),
           accept_encoding: 'gzip',
-          forbid_reuse: true, #false,
-          followlocation: true,
-          ssl_verifypeer: false,
-          ssl_verifyhost: 0,
+          forbid_reuse: true,
+          followlocation: page.options.fetch(:followlocation){ @followlocation },
+          ssl_verifypeer: page.options.fetch(:ssl_verifypeer){ @ssl_verifypeer },
+          ssl_verifyhost: page.options.fetch(:ssl_verifyhost){ @ssl_verifyhost },
           timeout: @request_timeout
         }
-        page.fetching_at = Time.now.to_i
         
-        request_options.merge!({proxy: @proxy}) if @proxy
-        request_options.merge!({proxyuserpwd: @proxyuserpwd}) if @proxyuserpwd
-        
-        if page.user_agent
-          request_options[:headers] = {"User-Agent" => page.user_agent, 'Accept-Charset' => 'utf-8'}
-        else
-          request_options[:headers] = {"User-Agent" => Crawley::Helpers::UserAgentRotator.next, 'Accept-Charset' => 'utf-8'}
-        end
+        proxy = proxy_for(page)
+        request_options.merge!({proxy: proxy.http? ? proxy.address :  "socks://#{proxy.address}"}) if proxy
+        request_options.merge!({proxyuserpwd: proxy.proxyuserpwd}) if proxy && proxy.proxyuserpwd.present?
 
         request = Typhoeus::Request.new(page[:url], request_options)
 
@@ -78,46 +67,9 @@ module Crawley
           page[:response_code] = 1
         end
 
-        retry_later   = determine_retry(response.code)
-        if retry_later
-          if page.retries_left > 0
-            page.retries_left -= 1
-          end
-          # page.fetching_at = determine_retry_at(page.retries_left)
-          page.save
-        else
-          page.fetched_at = Time.now.to_i
-          page.save
-        end
+        page = after_request_callback(page)
+        page.save
       end
-
-      def determine_retry(response_code)
-        case response_code
-        when 0 # Typheous 0 code means server is unreachable
-          true
-        when 1 # Timed out
-          true
-        when 100..199
-          true
-        when 200
-          false
-        when 201..299
-          false
-        when 300..399
-          false
-        when 404
-          false
-        when 407
-          raise "RejectedByProxyError"
-        when 400..499
-          true
-        when 500..599
-          true
-        else
-          true
-        end
-      end
-
 
     end
   end

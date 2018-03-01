@@ -16,8 +16,8 @@ module Crawley
       end
 
       def add_adapter(label, claz)
-        unless claz.method_defined?(:enqueue)
-          raise NoMethodError, "enqueue is not declared in the #{label.inspect}"
+        unless claz.method_defined?(:add)
+          raise NoMethodError, "add is not declared in the #{label.inspect}"
         end
         _adapters[label] = claz
       end

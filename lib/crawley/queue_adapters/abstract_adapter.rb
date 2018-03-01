@@ -8,13 +8,16 @@ module Crawley
                       :user_agent,
                       :post_body,
                       :headers,
+                      :fetcher_agent_id,
+                      :proxy_id,
                       :response_body,
                       :response_code,
                       :response_headers,
                       :response_total_time,
-                      :fetching_at,
+                      :retry_at,
                       :fetched_at,
-                      :retries_left,
+                      :retry_count,
+                      :max_retry_times,
                       :enqueued_at,
                       :page_type,
                       :queue,
@@ -29,19 +32,41 @@ module Crawley
           @user_agent = options.fetch(:user_agent) { nil }
           @post_body = options.fetch(:post_body) { nil }
           @headers = options.fetch(:headers) { {} }
+          @fetcher_agent_id = options.fetch(:fetcher_agent_id) { nil }
+          @proxy_id = options.fetch(:proxy_id) { nil }
           @response_body = options.fetch(:response_body) { nil }
           @response_code = options.fetch(:response_code) { nil }
           @response_headers = options.fetch(:response_headers) { {} }
           @response_total_time = options.fetch(:response_total_time) { nil }
-          @fetching_at = options.fetch(:fetching_at) { 0 }
+          @retry_at = options.fetch(:retry_at) { 0 }
           @fetched_at = options.fetch(:fetched_at) { 0 }
-          @retries_left = options.fetch(:retries_left) { 5 }
+          @retry_count = options.fetch(:retry_count) { 0 }
+          @max_retry_times = options.fetch(:max_retry_times) { nil }
           @enqueued_at = options.fetch(:enqueued_at) { 0 }
           @page_type = options.fetch(:page_type) { :seed }
           # @queue = options.fetch(:queue) { 'default' }
           @priority = options.fetch(:priority) { 0 }
           @processed_at = options.fetch(:processed_at) { 0 }
           @options = options
+
+          @_fetcher_agent = false
+          @_proxy = false
+        end
+
+        def fetcher_agent
+          if @_fetcher_agent == false
+            @_fetcher_agent = (@fetcher_agent_id ? Crawley::Helpers::FetcherAgent.find(@fetcher_agent_id) : nil)
+          else
+            @_fetcher_agent
+          end
+        end
+
+        def proxy
+          if @_proxy == false
+            @_proxy = (@proxy_id ? Crawley::Helpers::ProxyRotator.find(@proxy_id) : nil)
+          else
+            @_proxy
+          end
         end
 
         def response_cookies
@@ -58,13 +83,7 @@ module Crawley
         end
 
         def save
-          if self.fetched_at > 0
-            @queue.push_for_parsing self
-          elsif self.retries_left.zero?
-            @queue.puts_error_page self
-          else
-            @queue.push self
-          end
+          raise NotImplementedError
         end
 
         def [](k)
@@ -77,11 +96,15 @@ module Crawley
         @options = options
       end
 
-      def enqueue(url, options={})
+      def add(url, options={})
         raise NotImplementedError
       end
 
-      def shift
+      def fetch_pending(count=nil)
+        raise NotImplementedError
+      end
+
+      def fetch_downloaded(count=nil)
         raise NotImplementedError
       end
     end

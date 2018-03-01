@@ -1,4 +1,3 @@
-require 'csv'
 module Crawley
   module Helpers
     module DictionaryReader

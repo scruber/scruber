@@ -18,6 +18,15 @@ module Crawley
           if @cookie_jar.is_a?(String)
             @jar.load(StringIO.new(@cookie_jar))
           end
+          @_proxy = false
+        end
+
+        def proxy
+          if @_proxy == false
+            @_proxy = (@proxy_id ? Crawley::Helpers::ProxyRotator.find(@proxy_id) : nil)
+          else
+            @_proxy
+          end
         end
 
         def parse_cookies_from_page!(page)

@@ -2,8 +2,10 @@ require "crawley/version"
 require 'nokogiri'
 require 'http-cookie'
 require 'pickup'
+require 'csv'
 
 require "crawley/fetcher"
+require "crawley/fetcher_adapters/abstract_adapter"
 require "crawley/fetcher_adapters/typhoeus_fetcher"
 
 require "crawley/queue"
@@ -17,6 +19,7 @@ require "crawley/core/page_format/html"
 
 require "crawley/core/extensions/base"
 require "crawley/core/extensions/loop"
+require "crawley/core/extensions/csv_output"
 
 # require "crawley/core/configuration"
 # require "crawley/core/configuration"

@@ -97,7 +97,8 @@ module Crawley
         end
 
         def next(options={})
-          raise Crawley::ArgumentError.new("Proxy rotator not configured") if @configuration.nil?
+          # raise Crawley::ArgumentError.new("Proxy rotator not configured") if @configuration.nil?
+          return nil if @configuration.nil?
           if @configuration.mode == :random
             @configuration.pickup.pick
           else
@@ -110,6 +111,10 @@ module Crawley
           end
         end
         alias_method :random, :next
+
+        def find(id)
+          @configuration.proxies[id] rescue nil
+        end
 
         def configured?
           !@configuration.nil? && !@configuration.proxies.empty?
