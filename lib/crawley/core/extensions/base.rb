@@ -10,6 +10,15 @@ module Crawley
           def register
             Crawley::Core::Crawler.include self.const_get(:CoreMethods)
           end
+
+          def inherited(subclass)
+            @descendants ||= []
+            @descendants << subclass
+          end
+
+          def descendants
+            @descendants 
+          end
         end
       end
     end

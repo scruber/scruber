@@ -10,6 +10,7 @@ module Crawley
         @on_complete_callbacks = {}
         @queue = Crawley::Queue.new
         @fetcher = Crawley::Fetcher.new
+        load_extenstions
       end
 
       # 
@@ -81,6 +82,10 @@ module Crawley
         def process_page(page, page_type)
           page_format = @callbacks_options[page_type].fetch(:page_format){ nil }
           Crawley::Core::PageFormat.process(page, page_format)
+        end
+
+        def load_extenstions
+          Crawley::Core::Extensions::Base.descendants.each(&:register)
         end
     end
   end
