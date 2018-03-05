@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Crawley::Helpers::DictionaryReader::Xml do
+RSpec.describe Scruber::Helpers::DictionaryReader::Xml do
 
   describe "register" do
     it "should correctly read first element" do

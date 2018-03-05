@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Crawley::Helpers::UserAgentRotator do
+RSpec.describe Scruber::Helpers::UserAgentRotator do
 
   describe "configurable" do
     context "with block" do
@@ -9,7 +9,7 @@ RSpec.describe Crawley::Helpers::UserAgentRotator do
           clean
           set_filter :all
 
-          add "Crawley 1.0", tags: [:robot, :crawley]
+          add "Scruber 1.0", tags: [:robot, :scruber]
           add "GoogleBot 1.0", tags: [:robot, :google]
           add "Chrome 1.0", tags: [:desktop, :chrome]
           add "Android 1.0", tags: [:mobile, :android]
@@ -41,7 +41,7 @@ RSpec.describe Crawley::Helpers::UserAgentRotator do
 
     context "with dictionary" do
       before do
-        Crawley::Core::Extensions::Loop.add_dictionary(:default_user_agents, File.expand_path(File.dirname(__FILE__))+'/user_agents.xml', :xml)
+        Scruber::Core::Extensions::Loop.add_dictionary(:default_user_agents, File.expand_path(File.dirname(__FILE__))+'/user_agents.xml', :xml)
         
         described_class.configure do
           clean
@@ -83,7 +83,7 @@ RSpec.describe Crawley::Helpers::UserAgentRotator do
         clean
         set_filter :all
 
-        add "Crawley 1.0", tags: [:robot, :crawley]
+        add "Scruber 1.0", tags: [:robot, :scruber]
         add "GoogleBot 1.0", tags: [:robot, :google]
         add "Chrome 1.0", tags: [:desktop, :chrome]
         add "Android 1.0", tags: [:mobile, :android]
@@ -91,18 +91,18 @@ RSpec.describe Crawley::Helpers::UserAgentRotator do
     end
 
     it "should return all 4 user agents" do
-      expect(4.times.map{ described_class.next }.sort).to eq(["Crawley 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
+      expect(4.times.map{ described_class.next }.sort).to eq(["Scruber 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
     end
 
     it "should return all 4 user agents twice" do
-      expect(8.times.map{ described_class.next }.sort).to eq(["Crawley 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0","Crawley 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
+      expect(8.times.map{ described_class.next }.sort).to eq(["Scruber 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0","Scruber 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
     end
 
     it "should return only robot user agents" do
       described_class.configure do
         set_filter :robot
       end
-      expect(4.times.map{ described_class.next }.sort).to eq(["Crawley 1.0","GoogleBot 1.0","Crawley 1.0","GoogleBot 1.0"].sort)
+      expect(4.times.map{ described_class.next }.sort).to eq(["Scruber 1.0","GoogleBot 1.0","Scruber 1.0","GoogleBot 1.0"].sort)
     end
 
     it "should return only desktop chrome" do
@@ -119,7 +119,7 @@ RSpec.describe Crawley::Helpers::UserAgentRotator do
         clean
         set_filter :bad
 
-        add "Crawley 1.0", tags: [:robot, :crawley]
+        add "Scruber 1.0", tags: [:robot, :scruber]
         add "GoogleBot 1.0", tags: [:robot, :google]
         add "Chrome 1.0", tags: [:desktop, :chrome]
         add "Android 1.0", tags: [:mobile, :android]
@@ -127,15 +127,15 @@ RSpec.describe Crawley::Helpers::UserAgentRotator do
     end
 
     it "should return all 4 user agents" do
-      expect(4.times.map{ described_class.next(:all) }.sort).to eq(["Crawley 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
+      expect(4.times.map{ described_class.next(:all) }.sort).to eq(["Scruber 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
     end
 
     it "should return all 4 user agents twice" do
-      expect(8.times.map{ described_class.next(:all) }.sort).to eq(["Crawley 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0","Crawley 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
+      expect(8.times.map{ described_class.next(:all) }.sort).to eq(["Scruber 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0","Scruber 1.0","GoogleBot 1.0","Chrome 1.0","Android 1.0"].sort)
     end
 
     it "should return only robot user agents" do
-      expect(4.times.map{ described_class.next(:robot) }.sort).to eq(["Crawley 1.0","GoogleBot 1.0","Crawley 1.0","GoogleBot 1.0"].sort)
+      expect(4.times.map{ described_class.next(:robot) }.sort).to eq(["Scruber 1.0","GoogleBot 1.0","Scruber 1.0","GoogleBot 1.0"].sort)
     end
 
     it "should return only desktop chrome" do

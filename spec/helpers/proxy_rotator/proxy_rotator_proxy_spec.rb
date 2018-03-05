@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Crawley::Helpers::ProxyRotator::Proxy do
+RSpec.describe Scruber::Helpers::ProxyRotator::Proxy do
 
   describe "proxy" do
     let(:proxy) { described_class.new('127.0.0.1:3000', :user=>'user', :password=>'password', :probability=>1, :type=>'socks') }
@@ -13,8 +13,8 @@ RSpec.describe Crawley::Helpers::ProxyRotator::Proxy do
     end
 
     it 'should raise error if port or address not given' do
-      expect{ described_class.new('127.0.0.1') }.to raise_error(Crawley::ArgumentError)
-      expect{ described_class.new('', port: 3000) }.to raise_error(Crawley::ArgumentError)
+      expect{ described_class.new('127.0.0.1') }.to raise_error(Scruber::ArgumentError)
+      expect{ described_class.new('', port: 3000) }.to raise_error(Scruber::ArgumentError)
     end
   end
 

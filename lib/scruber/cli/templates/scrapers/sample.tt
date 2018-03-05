@@ -1,0 +1,7 @@
+Scruber.run do
+  queue.add "http://example.com"
+  
+  parser :seed do |page|
+    puts page.response_body
+  end
+end

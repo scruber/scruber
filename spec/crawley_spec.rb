@@ -1,19 +1,19 @@
 require "spec_helper"
 
-RSpec.describe Crawley do
+RSpec.describe Scruber do
   it "has a version number" do
-    expect(Crawley::VERSION).not_to be nil
+    expect(Scruber::VERSION).not_to be nil
   end
 
   describe "configurable" do
     before do
-      Crawley.configure do |config|
+      Scruber.configure do |config|
         config.fetcher_adapter = :typhoeus_fetcher
       end
     end
     
     it "returns :typhoeus_fetcher as fetcher" do
-      expect(Crawley.configuration.fetcher_adapter).to eq(:typhoeus_fetcher)
+      expect(Scruber.configuration.fetcher_adapter).to eq(:typhoeus_fetcher)
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe Crawley do
     it "simple example" do
       stub_request(:get, "http://example.com").to_return(body: 'Example Domain')
 
-      Crawley.run do
+      Scruber.run do
         queue.add "http://example.com"
         
         parser :seed do |page|
@@ -34,7 +34,7 @@ RSpec.describe Crawley do
     it "should return Nokogiri object" do
       stub_request(:get, "http://example.com/contacts.html").to_return(body: '<div><a>Contacts</a></div>')
 
-      Crawley.run do
+      Scruber.run do
         queue.add "http://example.com/contacts.html"
         
         parser :seed, page_format: :html do |page, html|

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Crawley::QueueAdapters::Memory do
+RSpec.describe Scruber::QueueAdapters::Memory do
   let(:queue){ described_class.new }
 
   it "queue page for downloading" do

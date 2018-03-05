@@ -1,0 +1,10 @@
+# Scruber::Core::Extensions::Loop.add_dictionary(:proxy_list, File.expand_path(File.dirname(__FILE__))+'/proxies.xml', :xml)
+
+# Scruber::Helpers::ProxyRotator.configure do
+#   clean
+#   set_mode :round_robin
+
+#   loop :proxy_list do |ua|
+#     add ua['name'], tags: ua['tags'].split(',').map(&:strip)
+#   end
+# end

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Crawley::Helpers::ProxyRotator do
+RSpec.describe Scruber::Helpers::ProxyRotator do
 
   describe "configurable" do
     before do
@@ -28,7 +28,7 @@ RSpec.describe Crawley::Helpers::ProxyRotator do
     end
 
     it "should raise error when set incorrect mode" do
-      expect{ described_class.configure { set_mode :bad } }.to raise_error(Crawley::ArgumentError)
+      expect{ described_class.configure { set_mode :bad } }.to raise_error(Scruber::ArgumentError)
     end
 
     it "should build proxy_keys" do

@@ -1,15 +1,15 @@
 require "spec_helper"
 
-RSpec.describe Crawley::Core::Extensions::CsvOutput do
+RSpec.describe Scruber::Core::Extensions::CsvOutput do
 
   describe "register" do
-    it "should extend Crawley::CsvOutput with csv_file and csv_out method" do
+    it "should extend Scruber::CsvOutput with csv_file and csv_out method" do
       described_class.register
 
-      expect(Crawley::Core::Crawler.method_defined?(:csv_file)).to be_truthy
-      expect(Crawley::Core::Crawler.method_defined?(:csv_out)).to be_truthy
-      expect(Crawley::Core::Crawler._registered_method_missings.keys.include?(/\Acsv_(\w+)_file\Z/)).to be_truthy
-      expect(Crawley::Core::Crawler.new.respond_to?(:csv_products_file)).to be_truthy
+      expect(Scruber::Core::Crawler.method_defined?(:csv_file)).to be_truthy
+      expect(Scruber::Core::Crawler.method_defined?(:csv_out)).to be_truthy
+      expect(Scruber::Core::Crawler._registered_method_missings.keys.include?(/\Acsv_(\w+)_file\Z/)).to be_truthy
+      expect(Scruber::Core::Crawler.new.respond_to?(:csv_products_file)).to be_truthy
     end
   end
 
@@ -18,7 +18,7 @@ RSpec.describe Crawley::Core::Extensions::CsvOutput do
       described_class.register
       csv_file_name = File.join(File.expand_path(File.dirname(__FILE__)), 'test.csv')
 
-      Crawley.run do
+      Scruber.run do
         csv_file csv_file_name, col_sep: '|'
         csv_out [1,2,3]
       end
@@ -32,7 +32,7 @@ RSpec.describe Crawley::Core::Extensions::CsvOutput do
     it "should register file and write output" do
       described_class.register
       csv_file_name = File.join(File.expand_path(File.dirname(__FILE__)), 'products.csv')
-      Crawley.run do
+      Scruber.run do
         csv_products_file csv_file_name, col_sep: '|'
         csv_products_out [1,2,3]
       end
