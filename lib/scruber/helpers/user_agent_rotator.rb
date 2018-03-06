@@ -7,7 +7,7 @@ module Scruber
 
         def initialize(name, options={})
           @name = name
-          raise Scruber::ArgumentError.new("You need to specify name") if @name.nil? || @name.empty?
+          raise Scruber::ArgumentError.new("You need to specify name") if @name.blank?
           @tags = options.fetch(:tags){ [] } || []
           if !@tags.is_a?(Array)
             @tags = [@tags]
@@ -62,7 +62,7 @@ module Scruber
 
         def next(tags=nil)
           raise Scruber::ArgumentError.new("UserAgent rotator not configured") if @configuration.nil?
-          tags = @configuration.tags if tags.nil? || tags.empty?
+          tags = @configuration.tags if tags.blank?
           user_agents = get_collection(tags)
           if @cursor.nil? || @cursor >= user_agents.count-1
             @cursor = 0

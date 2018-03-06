@@ -71,7 +71,7 @@ module Scruber
 
         def response_cookies
           cookies = self.response_headers['Set-Cookie']
-          if cookies.nil? || cookies.empty?
+          if cookies.blank?
             []
           else
             if cookies.is_a?(Array)

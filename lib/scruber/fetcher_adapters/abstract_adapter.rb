@@ -56,7 +56,7 @@ module Scruber
       def cookie_for(page)
         if page.fetcher_agent
           cookie = page.fetcher_agent.cookie_for(page.url)
-          cookie.nil? || cookie.empty? ? nil : cookie
+          cookie.blank? ? nil : cookie
         else
           nil
         end

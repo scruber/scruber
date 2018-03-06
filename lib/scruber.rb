@@ -3,6 +3,9 @@ require 'nokogiri'
 require 'http-cookie'
 require 'pickup'
 require 'csv'
+require 'active_support'
+require 'active_support/core_ext/object'
+require 'active_support/core_ext/hash'
 
 require "scruber/fetcher"
 require "scruber/fetcher_adapters/abstract_adapter"

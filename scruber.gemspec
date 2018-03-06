@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ivan Goncharov"]
   spec.email         = ["revis0r.mob@gmail.com"]
 
-  spec.summary       = %q{Crawling library}
-  spec.description   = %q{Crawling library}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Crawling framework}
+  spec.description   = %q{Crawling framework}
+  spec.homepage      = "https://github.com/scruber/scruber"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "pickup", "0.0.11"
   spec.add_dependency "nokogiri", "~> 1.8.0"
   spec.add_dependency "http-cookie", "~> 1.0.3"
+  spec.add_dependency "activesupport", "~> 5.1"
   spec.add_runtime_dependency "thor"
   spec.add_development_dependency "bundler", "~> 1.15"
   spec.add_development_dependency "rake", "~> 10.0"

@@ -7,7 +7,7 @@ module Scruber
 
         def initialize(proxy, options={})
           @host = proxy.split(':', 2).first
-          raise Scruber::ArgumentError.new("You need to specify proxy address") if @host.nil? || @host.empty?
+          raise Scruber::ArgumentError.new("You need to specify proxy address") if @host.blank?
           @port = options.fetch(:port) { proxy.split(':', 2)[1] }.to_i rescue nil
           raise Scruber::ArgumentError.new("You need to specify :port for this proxy or pass full proxy address like 127.0.0.1:100") if @port.nil? || @port.zero?
           @type = options.fetch(:type) { 'http' }
@@ -29,7 +29,7 @@ module Scruber
         end
 
         def proxyuserpwd
-          if @user.nil? || @user.empty?
+          if @user.blank?
             nil
           else
             "#{@user}:#{@password}"
@@ -117,7 +117,7 @@ module Scruber
         end
 
         def configured?
-          !@configuration.nil? && !@configuration.proxies.empty?
+          !@configuration.nil? && !@configuration.proxies.blank?
         end
       end
     end
