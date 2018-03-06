@@ -1,4 +1,4 @@
- #!/usr/bin/env ruby
- require "scruber/cli"
+#!/usr/bin/env ruby
+require "scruber/cli"
 
- Scruber::CLI::Root.start(ARGV)
+Scruber::CLI::Root.start(ARGV)
