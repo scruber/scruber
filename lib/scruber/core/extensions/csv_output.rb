@@ -17,8 +17,8 @@ module Scruber
           end
 
           def self.included(base)
-            Scruber::Core::Crawler.register_method_missing /\Acsv_(\w+)_file\Z/ do |meth, args|
-              file_id = meth.to_s.scan(/\Acsv_(\w+)_file\Z/).first.first.to_sym
+            Scruber::Core::Crawler.register_method_missing /\Acsv_(\w+)_file\Z/ do |meth, scan_results, args|
+              file_id = scan_results.first.first.to_sym
               path, options = args
               options = {} if options.nil?
               csv_file path, options.merge({file_id: file_id})

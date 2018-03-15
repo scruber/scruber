@@ -21,7 +21,7 @@ RSpec.describe Scruber do
     it "simple example" do
       stub_request(:get, "http://example.com").to_return(body: 'Example Domain')
 
-      Scruber.run do
+      Scruber.run :sample do
         queue.add "http://example.com"
         
         parser :seed do |page|
@@ -34,7 +34,7 @@ RSpec.describe Scruber do
     it "should return Nokogiri object" do
       stub_request(:get, "http://example.com/contacts.html").to_return(body: '<div><a>Contacts</a></div>')
 
-      Scruber.run do
+      Scruber.run :sample do
         queue.add "http://example.com/contacts.html"
         
         parser :seed, page_format: :html do |page, html|

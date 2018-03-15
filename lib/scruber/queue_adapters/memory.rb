@@ -7,11 +7,15 @@ module Scruber
         def save
           if self.fetched_at > 0
             @queue.add_downloaded self
-          elsif self.retry_count >= self.max_retry_times.to_i
+          elsif self.max_retry_times && self.retry_count >= self.max_retry_times.to_i
             @queue.add_error_page self
           else
             @queue.push self
           end
+        end
+
+        def delete
+          @queue.delete self
         end
       end
 
@@ -61,6 +65,12 @@ module Scruber
 
       def has_work?
         @queue.count > 0 || @downloaded_pages.count > 0
+      end
+
+      def delete(page)
+        @queue -= [page]
+        @downloaded_pages -= [page]
+        @error_pages -= [page]
       end
 
     end

@@ -52,10 +52,10 @@ module Scruber
   class << self
     attr_writer :configuration
 
-    def run(options={}, &block)
+    def run(scraper_name, options={}, &block)
       raise "You need a block to build!" unless block_given?
 
-      Core::Crawler.new(options).run(&block)
+      Core::Crawler.new(scraper_name, options).run(&block)
     end
 
     def configuration

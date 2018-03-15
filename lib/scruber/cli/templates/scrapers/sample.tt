@@ -1,4 +1,4 @@
-Scruber.run do
+Scruber.run :sample do
   queue.add "http://example.com"
   
   parser :seed do |page|

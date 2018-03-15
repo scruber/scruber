@@ -1,14 +1,15 @@
 module Scruber
   module Core
     class Crawler
-      attr_reader :queue, :fetcher
+      attr_reader :queue, :fetcher, :scraper_name
 
-      def initialize(options={})
+      def initialize(scraper_name, options={})
+        @scraper_name = scraper_name
         Scruber.configuration.merge_options(options)
         @callbacks_options = {}
         @callbacks = {}
         @on_complete_callbacks = {}
-        @queue = Scruber::Queue.new
+        @queue = Scruber::Queue.new(scraper_name: scraper_name)
         @fetcher = Scruber::Fetcher.new
         load_extenstions
       end
@@ -39,8 +40,8 @@ module Scruber
 
       def method_missing(method_sym, *arguments, &block)
         Scruber::Core::Crawler._registered_method_missings.find do |(pattern, func)|
-          if method_sym.to_s =~ pattern
-            instance_exec method_sym, arguments, &(func)
+          if (scan_results = method_sym.to_s.scan(pattern)).present?
+            instance_exec method_sym, scan_results, arguments, &(func)
             true
           else
             false

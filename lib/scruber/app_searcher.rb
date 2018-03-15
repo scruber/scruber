@@ -24,6 +24,13 @@ module Scruber
       end
     end
 
+    def find_scraper(name, app_path)
+      [
+        File.expand_path('../../scrapers/'+name+'.rb', app_path),
+        File.expand_path('../../scrapers/'+name, app_path),
+      ].find{|f| File.exists?(f) }
+    end
+
     def find_executable
       EXECUTABLES.find { |exe| File.file?(exe) }
     end

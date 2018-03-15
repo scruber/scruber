@@ -17,14 +17,15 @@ module Scruber
       def start(name)
         if defined?(APP_PATH)
           # raise ::Thor::Error, "ERROR: Scruber project not found." unless File.exist?(File.expand_path('config/application', Dir.pwd))
-          raise ::Thor::Error, "ERROR: Scraper not found." unless File.exist?(File.expand_path('../../scrapers/'+name+'.rb', APP_PATH))
+          scraper_path = Scruber::AppSearcher.find_scraper(name, APP_PATH)
+          raise ::Thor::Error, "ERROR: Scraper not found." if scraper_path.nil?
           say "booting..."
           require APP_PATH
           Dir[File.expand_path('../initializers/*.rb', APP_PATH)].sort.each do |i|
             require i
           end
           say "starting #{name}"
-          require File.expand_path('../../scrapers/'+name+'.rb', APP_PATH)
+          require scraper_path
         else
           Scruber::AppSearcher.exec_app(name)
         end

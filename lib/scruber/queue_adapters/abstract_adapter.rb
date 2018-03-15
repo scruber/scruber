@@ -28,6 +28,8 @@ module Scruber
         def initialize(queue, url, options={})
           @queue = queue
           @url = url
+
+          options = options.with_indifferent_access
           @method = options.fetch(:method) { :get }
           @user_agent = options.fetch(:user_agent) { nil }
           @post_body = options.fetch(:post_body) { nil }
@@ -88,6 +90,10 @@ module Scruber
 
         def [](k)
           instance_variable_get("@#{k.to_s}")
+        end
+
+        def delete
+          raise NotImplementedError
         end
 
       end
