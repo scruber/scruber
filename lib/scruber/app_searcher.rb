@@ -6,7 +6,7 @@ module Scruber
     RUBY = Gem.ruby
     EXECUTABLES = ["bin/scruber"]
 
-    def exec_app(name)
+    def exec_app
       original_cwd = Dir.pwd
 
       loop do
@@ -22,6 +22,7 @@ module Scruber
         # Otherwise keep moving upwards in search of an executable.
         Dir.chdir("..")
       end
+      true
     end
 
     def find_scraper(name, app_path)

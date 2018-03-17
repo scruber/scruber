@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
 require "scruber/cli"
+require "scruber/app_searcher"
 
-Scruber::CLI::Root.start(ARGV)
+Scruber::CLI::Root.start(ARGV) unless Scruber::AppSearcher.exec_app

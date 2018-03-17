@@ -1,7 +1,9 @@
-Scruber.run :sample do
-  queue.add "http://example.com"
+Scruber.run do
+  get "http://..."
   
-  parser :seed do |page|
-    puts page.response_body
+  parse :html do |page, doc|
+    # page - queue page object
+    # doc - processed object, in this case Nokogiri::HTML(page.response_body) object
+    puts doc.at('title').text
   end
 end
