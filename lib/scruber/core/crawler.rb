@@ -35,6 +35,7 @@ module Scruber
             if @callbacks[page.page_type.to_sym]
               processed_page = process_page(page, page.page_type.to_sym)
               instance_exec page, processed_page, &(@callbacks[page.page_type.to_sym])
+              page.processed! unless page.sent_to_redownload?
             end
           end
         end
@@ -50,7 +51,7 @@ module Scruber
       def method_missing(method_sym, *arguments, &block)
         Scruber::Core::Crawler._registered_method_missings.each do |(pattern, func)|
           if (scan_results = method_sym.to_s.scan(pattern)).present?
-            return instance_exec(method_sym, scan_results, arguments, &(func))
+            return instance_exec(method_sym, scan_results, arguments+[block], &(func))
           end
         end
         super

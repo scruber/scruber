@@ -5,7 +5,9 @@ module Scruber
 
       class Page < Scruber::QueueAdapters::AbstractAdapter::Page
         def save
-          if self.fetched_at > 0
+          if self.processed_at.to_i > 0
+            nil
+          elsif self.fetched_at > 0
             @queue.add_downloaded self
           elsif self.max_retry_times && self.retry_count >= self.max_retry_times.to_i
             @queue.add_error_page self
@@ -71,6 +73,10 @@ module Scruber
         @queue -= [page]
         @downloaded_pages -= [page]
         @error_pages -= [page]
+      end
+
+      def initialized?
+        @queue.present? || @downloaded_pages.present? || @error_pages.present?
       end
 
     end

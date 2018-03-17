@@ -53,6 +53,7 @@ module Scruber
 
           @_fetcher_agent = false
           @_proxy = false
+          @_redownload = false
         end
 
         def fetcher_agent
@@ -96,6 +97,25 @@ module Scruber
           raise NotImplementedError
         end
 
+        def processed!
+          @processed_at = Time.now.to_i
+          @_redownload = false
+          save
+        end
+
+        def redownload!
+          @_redownload = true
+
+          @processed_at = nil
+          @retry_count += 1
+          @fetched_at = 0
+          @response_body = nil
+          save
+        end
+
+        def sent_to_redownload?
+          @_redownload
+        end
       end
 
       def initialize(options={})
@@ -111,6 +131,10 @@ module Scruber
       end
 
       def fetch_downloaded(count=nil)
+        raise NotImplementedError
+      end
+
+      def initialized?
         raise NotImplementedError
       end
     end

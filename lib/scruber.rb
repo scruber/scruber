@@ -23,6 +23,8 @@ require "scruber/core/page_format/html"
 require "scruber/core/extensions/base"
 require "scruber/core/extensions/loop"
 require "scruber/core/extensions/csv_output"
+require "scruber/core/extensions/queue_aliases"
+require "scruber/core/extensions/parser_aliases"
 
 # require "scruber/core/configuration"
 # require "scruber/core/configuration"
