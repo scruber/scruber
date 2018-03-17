@@ -3,8 +3,17 @@ module Scruber
     class Crawler
       attr_reader :queue, :fetcher, :scraper_name
 
-      def initialize(scraper_name, options={})
-        @scraper_name = scraper_name
+      def initialize(*args)
+        if args.first.is_a?(Hash)
+          scraper_name = nil
+          options = args.first
+        else
+          scraper_name, options = args
+          options ||= {}
+        end
+        @scraper_name = scraper_name.present? ? scraper_name : ENV['SCRUBER_SCRAPER_NAME']
+        raise Scruber::ArgumentError.new("Scraper name is empty. Pass it to `Scruber.run :name do` or through ENV['SCRUBER_SCRAPER_NAME']") if @scraper_name.blank?
+        @scraper_name = @scraper_name.to_sym
         Scruber.configuration.merge_options(options)
         @callbacks_options = {}
         @callbacks = {}
@@ -39,14 +48,12 @@ module Scruber
       end
 
       def method_missing(method_sym, *arguments, &block)
-        Scruber::Core::Crawler._registered_method_missings.find do |(pattern, func)|
+        Scruber::Core::Crawler._registered_method_missings.each do |(pattern, func)|
           if (scan_results = method_sym.to_s.scan(pattern)).present?
-            instance_exec method_sym, scan_results, arguments, &(func)
-            true
-          else
-            false
+            return instance_exec(method_sym, scan_results, arguments, &(func))
           end
-        end || super
+        end
+        super
       end
 
       def respond_to?(method_sym, include_private = false)
@@ -81,7 +88,7 @@ module Scruber
         end
 
         def process_page(page, page_type)
-          page_format = @callbacks_options[page_type].fetch(:page_format){ nil }
+          page_format = @callbacks_options[page_type].fetch(:format){ nil }
           Scruber::Core::PageFormat.process(page, page_format)
         end
 

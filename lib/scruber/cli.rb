@@ -25,6 +25,7 @@ module Scruber
             require i
           end
           say "starting #{name}"
+          ENV['SCRUBER_SCRAPER_NAME'] = name
           require scraper_path
         else
           Scruber::AppSearcher.exec_app(name)

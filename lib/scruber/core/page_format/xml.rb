@@ -3,7 +3,7 @@ module Scruber
     module PageFormat
       class XML < Base
         def self.process(page)
-          Nokogiri.parse(page.response_body) rescue nil
+          Nokogiri::XML(page.response_body) rescue nil
         end
       end
     end
