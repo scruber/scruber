@@ -20,7 +20,7 @@ RSpec.describe Scruber::Helpers::UserAgentRotator do
         expect(described_class.configuration.user_agents.count).to eq(4)
       end
 
-      it "clean proxies list" do
+      it "clean user agents list" do
         described_class.configure do
           clean
         end

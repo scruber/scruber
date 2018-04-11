@@ -7,7 +7,7 @@ module Scruber
             file_id = options.fetch(:file_id) { :default }.to_sym
             options.delete(:file_id)
             Scruber::Core::Extensions::CsvOutput.register_csv file_id, path, options
-            on_complete_callback :close_csv_files do
+            on_complete -1 do
               Scruber::Core::Extensions::CsvOutput.close_all
             end
           end

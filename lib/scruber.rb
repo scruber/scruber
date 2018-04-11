@@ -26,6 +26,10 @@ require "scruber/core/extensions/csv_output"
 require "scruber/core/extensions/queue_aliases"
 require "scruber/core/extensions/parser_aliases"
 
+require "scruber/helpers/dictionary_reader"
+require "scruber/helpers/dictionary_reader/xml"
+require "scruber/helpers/dictionary_reader/csv"
+
 # require "scruber/core/configuration"
 # require "scruber/core/configuration"
 
@@ -43,11 +47,6 @@ module Scruber
     module FetcherAgentAdapters
       autoload :AbstractAdapter,  "scruber/helpers/fetcher_agent_adapters/abstract_adapter"
       autoload :Memory,           "scruber/helpers/fetcher_agent_adapters/memory"
-    end
-    autoload :DictionaryReader,   "scruber/helpers/dictionary_reader"
-    module DictionaryReader
-      autoload :Xml,              "scruber/helpers/dictionary_reader/xml"
-      autoload :Csv,              "scruber/helpers/dictionary_reader/csv"
     end
   end
 

@@ -17,7 +17,7 @@ module Scruber
         Scruber.configuration.merge_options(options)
         @callbacks_options = {}
         @callbacks = {}
-        @on_complete_callbacks = {}
+        @on_complete_callbacks = []
         @queue = Scruber::Queue.new(scraper_name: scraper_name)
         @fetcher = Scruber::Fetcher.new
         load_extenstions
@@ -39,7 +39,7 @@ module Scruber
             end
           end
         end
-        @on_complete_callbacks.each do |_,callback|
+        @on_complete_callbacks.sort_by{|c| -c[0] }.each do |(_,callback)|
           instance_exec &(callback)
         end
       end
@@ -84,8 +84,8 @@ module Scruber
           @callbacks[page_type.to_sym] = block
         end
 
-        def on_complete_callback(name, &block)
-          @on_complete_callbacks[name] = block
+        def on_complete(priority=1, &block)
+          @on_complete_callbacks.push [priority,block]
         end
 
         def process_page(page, page_type)
