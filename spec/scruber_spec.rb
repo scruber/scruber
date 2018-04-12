@@ -1,6 +1,15 @@
 require "spec_helper"
 
 RSpec.describe Scruber do
+  before do
+    Scruber::Helpers::UserAgentRotator.configure do
+      clean
+      set_filter :all
+      add "Scruber 1.0", tags: [:robot, :scruber]
+      add "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36", tags: [:desktop, :chrome, :macos]
+    end
+  end
+
   it "has a version number" do
     expect(Scruber::VERSION).not_to be nil
   end
@@ -133,6 +142,17 @@ RSpec.describe Scruber do
         expect($title).to eq('Product')
         expect($retry_count).to eq(2)
       end
+    end
+  end
+
+  describe "#root" do
+    it "should return nil without APP_PATH defined" do
+      expect(Scruber.root).to eq(nil)
+    end
+
+    it "should return path object" do
+      APP_PATH='/tmp/a/b/'
+      expect(Scruber.root.to_s).to eq('/tmp')
     end
   end
 end

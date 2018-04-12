@@ -22,6 +22,7 @@ require "scruber/core/page_format/html"
 
 require "scruber/core/extensions/base"
 require "scruber/core/extensions/loop"
+require "scruber/core/extensions/seed"
 require "scruber/core/extensions/csv_output"
 require "scruber/core/extensions/queue_aliases"
 require "scruber/core/extensions/parser_aliases"
@@ -35,11 +36,11 @@ require "scruber/helpers/dictionary_reader/csv"
 
 module Scruber
   class ArgumentError < ::ArgumentError; end
-  module Core
-    autoload :Configuration, "scruber/core/configuration"
-    autoload :Crawler,       "scruber/core/crawler"
-  end
 
+  module Core
+    autoload :Configuration,    "scruber/core/configuration"
+    autoload :Crawler,          "scruber/core/crawler"
+  end
   module Helpers
     autoload :UserAgentRotator,   "scruber/helpers/user_agent_rotator"
     autoload :ProxyRotator,       "scruber/helpers/proxy_rotator"
@@ -65,6 +66,14 @@ module Scruber
 
     def configure(&block)
       yield configuration
+    end
+
+    def root
+      if defined?(APP_PATH)
+        Pathname.new(File.expand_path('../../', APP_PATH))
+      else
+        nil
+      end
     end
   end
 end

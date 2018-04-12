@@ -126,6 +126,10 @@ module Scruber
         raise NotImplementedError
       end
 
+      def size
+        raise NotImplementedError
+      end
+
       def fetch_pending(count=nil)
         raise NotImplementedError
       end

@@ -5,7 +5,7 @@ RSpec.describe Scruber::QueueAdapters::Memory do
 
   it "queue page for downloading" do
     queue.add "http://example.com"
-    expect(queue.queue_size).to eq(1)
+    expect(queue.size).to eq(1)
   end
 
   it "shift first enqueued page" do

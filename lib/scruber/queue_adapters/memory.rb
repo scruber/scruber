@@ -37,7 +37,7 @@ module Scruber
       end
       alias_method :add, :push
 
-      def queue_size
+      def size
         @queue.count
       end
 
