@@ -15,10 +15,12 @@ module Scruber
         raise Scruber::ArgumentError.new("Scraper name is empty. Pass it to `Scruber.run :name do` or through ENV['SCRUBER_SCRAPER_NAME']") if @scraper_name.blank?
         @scraper_name = @scraper_name.to_sym
         Scruber.configuration.merge_options(options)
+        ActiveSupport::Dependencies.autoload_paths = Scruber.configuration.autoload_paths
+        
         @callbacks_options = {}
         @callbacks = {}
         @on_complete_callbacks = []
-        @queue = Scruber::Queue.new(scraper_name: scraper_name)
+        @queue = Scruber::Queue.new(scraper_name: @scraper_name)
         @fetcher = Scruber::Fetcher.new
         load_extenstions
       end
@@ -97,5 +99,6 @@ module Scruber
           Scruber::Core::Extensions::Base.descendants.each(&:register)
         end
     end
+
   end
 end

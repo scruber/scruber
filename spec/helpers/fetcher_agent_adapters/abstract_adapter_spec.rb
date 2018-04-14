@@ -39,4 +39,8 @@ RSpec.describe Scruber::Helpers::FetcherAgentAdapters::AbstractAdapter do
     end
 
   end
+
+  it "should be accessible from scraper" do
+    expect { Scruber.run(:sample) { FetcherAgent } }.not_to raise_error
+  end
 end

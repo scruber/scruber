@@ -3,7 +3,9 @@ require 'nokogiri'
 require 'http-cookie'
 require 'pickup'
 require 'csv'
+require 'core_ext/const_missing'
 require 'active_support'
+require 'active_support/dependencies'
 require 'active_support/core_ext/object'
 require 'active_support/core_ext/hash'
 
@@ -56,7 +58,7 @@ module Scruber
 
     def run(*args, &block)
       raise "You need a block to build!" unless block_given?
-
+      
       Core::Crawler.new(*args).run(&block)
     end
 

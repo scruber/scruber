@@ -6,7 +6,8 @@ module Scruber
                     :fetcher_agent_adapter,
                     :fetcher_agent_options,
                     :queue_adapter,
-                    :queue_options
+                    :queue_options,
+                    :autoload_paths
 
       def initialize
         @fetcher_adapter = :typhoeus_fetcher
@@ -15,6 +16,7 @@ module Scruber
         @fetcher_agent_options = {}
         @queue_adapter = :memory
         @queue_options = {}
+        @autoload_paths = []
       end
 
       def merge_options(options)
@@ -24,6 +26,7 @@ module Scruber
         @fetcher_agent_options.merge! options.fetch(:fetcher_agent_options){ {} }
         @queue_adapter = options.fetch(:queue_adapter){ @queue_adapter }
         @queue_options.merge! options.fetch(:queue_options){ {} }
+        @autoload_paths += options.fetch(:autoload_paths){ [] }
       end
     end
   end

@@ -111,4 +111,8 @@ RSpec.describe Scruber::Helpers::ProxyRotator do
       expect(100.times.map{ described_class.next.host }.select{|h| h == '127.0.0.1'}.count).to be > 75
     end
   end
+
+  it "should be accessible from scraper" do
+    expect { Scruber.run(:sample) { ProxyRotator } }.not_to raise_error
+  end
 end

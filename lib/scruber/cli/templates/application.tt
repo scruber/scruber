@@ -15,4 +15,5 @@ Scruber.configure do |config|
   config.fetcher_agent_options = {}
   config.queue_adapter = :<%= options[:queue] %>
   config.queue_options = {}
+  config.autoload_paths << Scruber.root.join('lib')
 end

@@ -19,6 +19,7 @@ module Scruber
         raise ::Thor::Error, "ERROR: #{path} already exists." if File.exist?(path)
         say "Creating scruber project at #{path}"
         FileUtils.mkdir_p(path)
+        FileUtils.mkdir_p(path+'/lib')
       end
 
       def create_files

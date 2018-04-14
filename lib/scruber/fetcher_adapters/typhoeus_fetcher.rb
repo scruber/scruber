@@ -64,7 +64,7 @@ module Scruber
         page.response_total_time = response.total_time
         
         if response.timed_out?
-          page[:response_code] = 1
+          page.response_code = 1
         end
 
         page = after_request_callback(page)
