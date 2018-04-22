@@ -33,7 +33,7 @@ RSpec.describe Scruber::Helpers::FetcherAgentAdapters::AbstractAdapter do
     end
 
     it "parse cookies from page" do
-      page = Scruber::QueueAdapters::AbstractAdapter::Page.new(nil, 'http://example.com', response_headers: {"Connection" => "keep-alive","Set-Cookie" => "__cfduid=dc8db498b1e419b7943052a69c8e9d1d01504311966; expires=Sun, 02-Sep-18 00:26:06 GMT; path=/; domain=example.com; HttpOnly"})
+      page = Scruber::QueueAdapters::AbstractAdapter::Page.new(nil, url: 'http://example.com', response_headers: {"Connection" => "keep-alive","Set-Cookie" => "__cfduid=dc8db498b1e419b7943052a69c8e9d1d01504311966; expires=Sun, 02-Sep-18 00:26:06 GMT; path=/; domain=example.com; HttpOnly"})
       agent.parse_cookies_from_page!(page)
       expect(agent.cookie_for('http://example.com')).to eq('__cfduid=dc8db498b1e419b7943052a69c8e9d1d01504311966; feed_flow=top')
     end

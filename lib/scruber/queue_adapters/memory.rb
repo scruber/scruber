@@ -31,7 +31,7 @@ module Scruber
         # @return [void]
         def save
           if self.processed_at.to_i > 0
-            nil
+            @queue.add_processed_page self
           elsif self.fetched_at > 0
             @queue.add_downloaded self
           elsif self.max_retry_times && self.retry_count >= self.max_retry_times.to_i
@@ -52,6 +52,7 @@ module Scruber
 
       def initialize(options={})
         super(options)
+        @processed_ids = []
         @queue = []
         @downloaded_pages = []
         @error_pages = []
@@ -64,13 +65,26 @@ module Scruber
       # 
       # @return [void]
       def add(url_or_page, options={})
-        if url_or_page.is_a?(Page)
-          @queue.push url_or_page
-        else
-          @queue.push Page.new(self, url_or_page, options)
+        unless url_or_page.is_a?(Page)
+          url_or_page = Page.new(self, options.merge(url: url_or_page))
         end
+        @queue.push(url_or_page) unless @processed_ids.include?(url_or_page.id) || find(url_or_page.id)
       end
       alias_method :push, :add
+
+      # 
+      # Search page by id
+      # @param id [Object] id of page
+      # 
+      # @return [Page] page
+      def find(id)
+        [@queue, @downloaded_pages, @error_pages].each do |q|
+          q.each do |i|
+            return i if i.id == id
+          end
+        end
+        nil
+      end
 
       # 
       # Size of queue
@@ -133,6 +147,17 @@ module Scruber
       # @return [void]
       def add_error_page(page)
         @error_pages.push page
+      end
+
+      # 
+      # Saving processed page id to prevent
+      # adding identical pages to queue
+      # 
+      # @param page [Page] page
+      # 
+      # @return [void]
+      def add_processed_page(page)
+        @processed_ids.push page.id
       end
 
       # 
