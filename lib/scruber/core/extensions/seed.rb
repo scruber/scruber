@@ -1,6 +1,14 @@
 module Scruber
   module Core
     module Extensions
+
+      # 
+      # Seed DSL
+      # Seed block executes only when queue was not initialized yet
+      # (queue has no any page, processed or pending)
+      # 
+      # @author Ivan Goncharov
+      # 
       class Seed < Base
         module CoreMethods
           def seed(&block)

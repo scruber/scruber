@@ -1,6 +1,30 @@
 module Scruber
   module Core
     module Extensions
+      # 
+      # DSL for registering parsers.
+      # @example Sample of DSL
+      #   Scruber.run :sample do
+      #     get 'https://example.com'
+      #     get_product 'https://example.com/product1.html'
+      #   
+      #     # Parsing https://example.com
+      #     parse :html do |page,doc|
+      #       log doc.at('title').text
+      #     end
+      #   
+      #     # Parsing https://example.com/product1.html
+      #     parse_product :html do |page,doc|
+      #       log doc.at('title').text
+      #     end
+      #     # Alias to
+      #     # parser :product, format: :html do |page,doc|
+      #     #   log doc.at('title').text
+      #     # end
+      #   end
+      # 
+      # @author Ivan Gocharov
+      # 
       class ParserAliases < Base
         module CoreMethods
           def parse(*args, &block)

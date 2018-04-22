@@ -9,15 +9,18 @@ RSpec.describe Scruber::Core::Extensions::Loop do
       expect(Scruber::Core::Crawler.method_defined?(:loop)).to be_truthy
     end
 
-    # it "should return Nokogiri object" do
-    #   Scruber::Core::Extensions::Loop.register
-    #   $title = []
-    #   Scruber.run do
-    #     loop :postal_codes, r: 10 do |i,o,o2|
-    #       $title.push [i,o,o2]
-    #     end
-    #   end
-    #   puts $title
-    # end
+    it "should add dictionary and read info" do
+      Scruber::Core::Extensions::Loop.register
+      $zip_codes = []
+      Scruber.run :sample do
+        add_dictionary :zip_codes_usa, File.expand_path(File.dirname(__FILE__))+'/dict.csv', :csv
+        seed do
+          loop :zip_codes_usa, state: 'NY' do |row|
+            $zip_codes.push row['zip']
+          end
+        end
+      end
+      expect($zip_codes).to eq(['10001', '10002'])
+    end
   end
 end

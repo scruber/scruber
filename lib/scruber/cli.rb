@@ -16,6 +16,7 @@ module Scruber
       register Generators, 'generate', 'generate [GENERATOR]', 'Generate something'
 
       desc 'start', 'Run scraper'
+      method_option :silent, :type => :boolean, :aliases => '-s', default: false
       def start(name)
         if defined?(APP_PATH)
           scraper_path = Scruber::AppSearcher.find_scraper(name, APP_PATH)
@@ -28,6 +29,7 @@ module Scruber
           ENV['SCRUBER_SCRAPER_NAME'] = File.basename(scraper_path).gsub(/\.rb\Z/, '').underscore
           say "starting #{ENV['SCRUBER_SCRAPER_NAME']}"
           
+          Scruber.configuration.silent = options[:silent]
           require scraper_path
         else
           raise ::Thor::Error, "ERROR: Scruber project not found."

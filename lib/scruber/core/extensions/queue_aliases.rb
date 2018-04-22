@@ -1,6 +1,21 @@
 module Scruber
   module Core
     module Extensions
+      # 
+      # DSL for adding pages to queue
+      # @example Sample of DSL
+      #   Scruber.run :sample do
+      #     get_product 'https://example.com/product1.html'
+      #     # Alias to
+      #     # queue.add 'https://example.com/product1.html', page_type: :product
+      # 
+      #     post_subscribe 'https://example.com/subscribe', body: { email: 'sample@example.com' }
+      #     # Alias to
+      #     # queue.add 'https://example.com/product1.html', method: :post, page_type: :subscribe, body: { email: 'sample@example.com' }
+      #   end
+      # 
+      # @author Ivan Gocharov
+      # 
       class QueueAliases < Base
         module CoreMethods
           %w(get post head).each do |meth|

@@ -20,6 +20,7 @@ module Scruber
         say "Creating scruber project at #{path}"
         FileUtils.mkdir_p(path)
         FileUtils.mkdir_p(path+'/lib')
+        FileUtils.mkdir_p(path+'/log')
       end
 
       def create_files

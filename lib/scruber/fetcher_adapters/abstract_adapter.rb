@@ -32,6 +32,9 @@ module Scruber
           if page.max_retry_times.nil?
             page.max_retry_times = @max_retry_times
           end
+          if page.max_retry_times && page.retry_count >= page.max_retry_times.to_i
+            page.retry_at = 1.year.from_now.to_i
+          end
         else
           page.fetched_at = Time.now.to_i
         end

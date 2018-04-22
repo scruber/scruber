@@ -3,6 +3,8 @@ require 'nokogiri'
 require 'http-cookie'
 require 'pickup'
 require 'csv'
+require 'paint'
+require 'powerbar'
 require 'core_ext/const_missing'
 require 'active_support'
 require 'active_support/dependencies'
@@ -24,6 +26,7 @@ require "scruber/core/page_format/html"
 
 require "scruber/core/extensions/base"
 require "scruber/core/extensions/loop"
+require "scruber/core/extensions/log"
 require "scruber/core/extensions/seed"
 require "scruber/core/extensions/csv_output"
 require "scruber/core/extensions/queue_aliases"
@@ -32,9 +35,6 @@ require "scruber/core/extensions/parser_aliases"
 require "scruber/helpers/dictionary_reader"
 require "scruber/helpers/dictionary_reader/xml"
 require "scruber/helpers/dictionary_reader/csv"
-
-# require "scruber/core/configuration"
-# require "scruber/core/configuration"
 
 module Scruber
   class ArgumentError < ::ArgumentError; end
@@ -54,7 +54,7 @@ module Scruber
   end
 
   class << self
-    attr_writer :configuration
+    attr_writer :configuration, :logger
 
     def run(*args, &block)
       raise "You need a block to build!" unless block_given?
@@ -64,6 +64,10 @@ module Scruber
 
     def configuration
       @configuration ||= Core::Configuration.new
+    end
+
+    def logger
+      @logger ||= Scruber.root.nil? ? nil : Logger.new(Scruber.root.join('log', 'crawler.log'))
     end
 
     def configure(&block)

@@ -1,6 +1,20 @@
 module Scruber
   module Core
     module Extensions
+      # 
+      # Helper to write csv files
+      # @example Writing log and products data
+      #   Scruber.run :simple do
+      #     csv_file Scruber.root.join('log.csv'), col_sep: ';'
+      #     csv_products_file Scruber.root.join('products.csv'), col_sep: ';'
+      # 
+      #     csv_out [Time.now.to_i, 'sample log record']
+      #     csv_product_out ['ID', 'Title']
+      #     csv_product_out ['1', 'Soap']
+      #   end
+      # 
+      # @author Ivan Goncharov
+      # 
       class CsvOutput < Base
         module CoreMethods
           def csv_file(path, options={})
@@ -16,6 +30,13 @@ module Scruber
             Scruber::Core::Extensions::CsvOutput.csv_out :default, fields
           end
 
+          # 
+          # Registering method missing callbacks on including
+          # to crawling class
+          # 
+          # @param base [Class] class where module was included
+          # 
+          # @return [void]
           def self.included(base)
             Scruber::Core::Crawler.register_method_missing /\Acsv_(\w+)_file\Z/ do |meth, scan_results, args|
               file_id = scan_results.first.first.to_sym
