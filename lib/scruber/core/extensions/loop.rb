@@ -22,7 +22,7 @@ module Scruber
           # 
           # @param dictionary [Symbol] name of dictionary
           # @param options [Hash] search conditions
-          # @param &block [Proc] body, yields row of dictionary
+          # @param block [Proc] body, yields row of dictionary
           # 
           # @return [void]
           def loop(dictionary, options={}, &block)

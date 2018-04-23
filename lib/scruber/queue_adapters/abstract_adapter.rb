@@ -224,7 +224,7 @@ module Scruber
 
       # 
       # Fetch pending page for fetching
-      # @param count=nil [Integer] count of pages to fetch
+      # @param count [Integer] count of pages to fetch
       # 
       # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
       def fetch_pending(count=nil)
@@ -233,7 +233,7 @@ module Scruber
 
       # 
       # Fetch downloaded and not processed pages for feching
-      # @param count=nil [Integer] count of pages to fetch
+      # @param count [Integer] count of pages to fetch
       # 
       # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
       def fetch_downloaded(count=nil)
@@ -242,7 +242,7 @@ module Scruber
 
       # 
       # Fetch error page
-      # @param count=nil [Integer] count of pages to fetch
+      # @param count [Integer] count of pages to fetch
       # 
       # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
       def fetch_error(count=nil)

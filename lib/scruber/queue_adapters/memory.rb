@@ -14,9 +14,9 @@ module Scruber
       attr_reader :error_pages
 
       # 
-      # [class description]
+      # Queue item class
       # 
-      # @author [revis0r]
+      # @author Ivan Goncharov
       # 
       # @attr (see Scruber::QueueAdapters::AbstractAdapter::Page)
       # 
@@ -50,6 +50,11 @@ module Scruber
         end
       end
 
+      # 
+      # Queue initializer
+      # @param options [Hash] See {Scruber::QueueAdapters::AbstractAdapter#initializer}
+      # 
+      # @return [Scruber::QueueAdapters::Memory] class instance
       def initialize(options={})
         super(options)
         @processed_ids = []
@@ -60,7 +65,7 @@ module Scruber
 
       # 
       # Add page to queue
-      # @param url [String] URL of page
+      # @param url_or_page [String|Page] URL of page or Page object
       # @param options [Hash] Other options, see {Scruber::QueueAdapters::AbstractAdapter::Page}
       # 
       # @return [void]
@@ -105,7 +110,7 @@ module Scruber
 
       # 
       # Fetch downloaded and not processed pages for feching
-      # @param count=nil [Integer] count of pages to fetch
+      # @param count [Integer] count of pages to fetch
       # 
       # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
       def fetch_downloaded(count=nil)
@@ -118,7 +123,7 @@ module Scruber
 
       # 
       # Fetch error page
-      # @param count=nil [Integer] count of pages to fetch
+      # @param count [Integer] count of pages to fetch
       # 
       # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
       def fetch_error(count=nil)
@@ -131,7 +136,7 @@ module Scruber
 
       # 
       # Fetch pending page for fetching
-      # @param count=nil [Integer] count of pages to fetch
+      # @param count [Integer] count of pages to fetch
       # 
       # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
       def fetch_pending(count=nil)

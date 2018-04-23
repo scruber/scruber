@@ -87,7 +87,7 @@ module Scruber
       # @param options [Hash] options for parser
       # @option options [Symbol] :format format of page. Scruber automatically process 
       #                                  page body depends on this format. For example :json or :html
-      # @param &block [Proc] body of parser
+      # @param block [Proc] body of parser
       # 
       # @return [void]
       def parser(page_type, options={}, &block)
@@ -99,8 +99,8 @@ module Scruber
       # regexp and proc body to process calls
       # 
       # @param method_sym [Symbol] missing method name
-      # @param *arguments [Array] arguments
-      # @param &block [Proc] block (if passed)
+      # @param arguments [Array] arguments
+      # @param block [Proc] block (if passed)
       # 
       # @return [type] [description]
       def method_missing(method_sym, *arguments, &block)
@@ -128,7 +128,7 @@ module Scruber
         # Register method missing callback
         # 
         # @param pattern [Regexp] Regexp to match missing name
-        # @param &block [Proc] Body to process missing method
+        # @param block [Proc] Body to process missing method
         # 
         # @return [void]
         def register_method_missing(pattern, &block)
@@ -155,7 +155,7 @@ module Scruber
       #     end
       # 
       # @param priority [Integer] priority of this callback
-      # @param &block [Proc] body of callback
+      # @param block [Proc] body of callback
       # 
       # @return [void]
       def on_complete(priority=1, &block)
@@ -164,7 +164,7 @@ module Scruber
 
       # 
       # Register callback which will be executed for
-      # error pages.
+      # error pages, like 404 or 500
       # Attention! You should call one of these methods for page
       # to prevent infinite loop: page.processed!, page.delete, page.redownload!(0)
       # @example Processing error page
@@ -179,8 +179,7 @@ module Scruber
       #       end
       #     end
       # 
-      # @param priority [Integer] priority of this callback
-      # @param &block [Proc] body of callback
+      # @param block [Proc] body of callback
       # 
       # @return [void]
       def on_page_error(&block)
@@ -196,7 +195,7 @@ module Scruber
         # @param options [Hash] options for parser
         # @option options [Symbol] :format format of page. Scruber automatically process 
         #                                  page body depends on this format. For example :json or :html
-        # @param &block [Proc] body of parser
+        # @param block [Proc] body of parser
         # 
         # @return [void]
         def register_callback(page_type, options, &block)
