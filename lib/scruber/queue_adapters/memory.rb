@@ -117,6 +117,19 @@ module Scruber
       end
 
       # 
+      # Fetch error page
+      # @param count=nil [Integer] count of pages to fetch
+      # 
+      # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
+      def fetch_error(count=nil)
+        if count.nil?
+          @error_pages.shift
+        else
+          @error_pages.shift(count)
+        end
+      end
+
+      # 
       # Fetch pending page for fetching
       # @param count=nil [Integer] count of pages to fetch
       # 

@@ -36,7 +36,14 @@ module Scruber
             page.retry_at = 1.year.from_now.to_i
           end
         else
-          page.fetched_at = Time.now.to_i
+          # Monkey patch to prevent redownloading of 404 pages
+          # and processing 404 pages by regular parsers
+          if page.response_code == 404
+            page.retry_count = 1 if page.retry_count.nil? || page.retry_count.zero?
+            page.max_retry_times = page.retry_count
+          else
+            page.fetched_at = Time.now.to_i
+          end
         end
         page
       end
@@ -92,26 +99,16 @@ module Scruber
 
       def bad_response?(page)
         case page.response_code
-        when 0
+        when 0..1
           true
-        when 1
-          true
-        when 100..199
-          true
-        when 200
-          false
-        when 201..299
+        when 200..299
           false
         when 300..399
           @options.fetch(:followlocation) { false }
         when 404
           false
         when 407
-          raise "RejectedByProxyError"
-        when 400..499
-          true
-        when 500..599
-          true
+          raise "RejectedByProxy"
         else
           true
         end

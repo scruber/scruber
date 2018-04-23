@@ -41,6 +41,7 @@ module Scruber
         @scraper_name = @scraper_name.to_sym
         @callbacks_options = {}
         @callbacks = {}
+        @on_page_error_callback = nil
         @on_complete_callbacks = []
 
         Scruber.configuration.merge_options(options)
@@ -66,6 +67,11 @@ module Scruber
               processed_page = process_page(page, page.page_type.to_sym)
               instance_exec page, processed_page, &(@callbacks[page.page_type.to_sym])
               page.processed! unless page.sent_to_redownload?
+            end
+          end
+          if @on_page_error_callback
+            while page = @queue.fetch_error do
+              instance_exec page, &(@on_page_error_callback)
             end
           end
         end
@@ -154,6 +160,31 @@ module Scruber
       # @return [void]
       def on_complete(priority=1, &block)
         @on_complete_callbacks.push [priority,block]
+      end
+
+      # 
+      # Register callback which will be executed for
+      # error pages.
+      # Attention! You should call one of these methods for page
+      # to prevent infinite loop: page.processed!, page.delete, page.redownload!(0)
+      # @example Processing error page
+      #     on_page_error do |page|
+      #       if page.response_body =~ /distil/
+      #         page.page.redownload!(0)
+      #       elsif page.response_code == /404/
+      #         get page.at('a.moved_to').attr('href')
+      #         page.processed!
+      #       else
+      #         page.delete
+      #       end
+      #     end
+      # 
+      # @param priority [Integer] priority of this callback
+      # @param &block [Proc] body of callback
+      # 
+      # @return [void]
+      def on_page_error(&block)
+        @on_page_error_callback = block
       end
 
       private

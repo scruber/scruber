@@ -22,6 +22,70 @@ RSpec.shared_examples "queue_adapter" do
     expect(downloaded_page.url).to eq("http://example.com")
   end
 
+  describe "processing errors page" do
+    it "should fetch error page" do
+      queue.add "http://example.com"
+      page = queue.fetch_pending
+      page.retry_count = 5
+      page.max_retry_times = 5
+      page.save
+      error_page = queue.fetch_error
+      expect(error_page).not_to eq(nil)
+      expect(error_page.id).to eq(page.id)
+    end
+
+    it "should return page to downloading" do
+      queue.add "http://example.com"
+      page = queue.fetch_pending
+      page.retry_count = 5
+      page.max_retry_times = 5
+      page.save
+      error_page = queue.fetch_error
+      error_page.redownload!(0)
+      pending_page = queue.fetch_pending
+      err_page = queue.fetch_error
+      d_page = queue.fetch_downloaded
+      expect(error_page.id).to eq(pending_page.id)
+      expect(err_page).to be_nil
+      expect(d_page).to be_nil
+    end
+
+    it "should delete page from queue" do
+      queue.add "http://example.com"
+      page = queue.fetch_pending
+      page.retry_count = 5
+      page.max_retry_times = 5
+      page.save
+      error_page = queue.fetch_error
+      error_page.delete
+      pending_page = queue.fetch_pending
+      err_page = queue.fetch_error
+      d_page = queue.fetch_downloaded
+      expect(pending_page).to be_nil
+      expect(err_page).to be_nil
+      expect(d_page).to be_nil
+    end
+
+    it "should process page" do
+      queue.add "http://example.com"
+      page = queue.fetch_pending
+      page.retry_count = 5
+      page.max_retry_times = 5
+      page.save
+      error_page = queue.fetch_error
+      error_page.processed!
+      pending_page = queue.fetch_pending
+      err_page = queue.fetch_error
+      d_page = queue.fetch_downloaded
+      expect(pending_page).to be_nil
+      expect(err_page).to be_nil
+      expect(d_page).to be_nil
+      queue.add "http://example.com"
+      pending_page = queue.fetch_pending
+      expect(pending_page).to be_nil
+    end
+  end
+
   context "#add" do
     it "queue page for downloading" do
       queue.add "http://example.com"

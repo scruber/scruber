@@ -159,12 +159,18 @@ module Scruber
         # 
         # Mark page as pending and return to queue
         # 
+        # @param new_retry_count [Integer] new count of reties. Allows to reset retries count
+        # 
         # @return [void]
-        def redownload!
+        def redownload!(new_retry_count=nil)
           @_redownload = true
 
-          @processed_at = nil
-          @retry_count += 1
+          @processed_at = 0
+          if new_retry_count
+            @retry_count = new_retry_count
+          else
+            @retry_count += 1
+          end
           @fetched_at = 0
           @response_body = nil
           save
@@ -231,6 +237,15 @@ module Scruber
       # 
       # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
       def fetch_downloaded(count=nil)
+        raise NotImplementedError
+      end
+
+      # 
+      # Fetch error page
+      # @param count=nil [Integer] count of pages to fetch
+      # 
+      # @return [Scruber::QueueAdapters::AbstractAdapter::Page|Array<Scruber::QueueAdapters::AbstractAdapter::Page>] page of count = nil, or array of pages of count > 0
+      def fetch_error(count=nil)
         raise NotImplementedError
       end
 

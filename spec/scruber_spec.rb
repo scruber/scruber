@@ -143,6 +143,46 @@ RSpec.describe Scruber do
         expect($retry_count).to eq(2)
       end
     end
+
+    context "processing error examples" do
+      it "should process 500 error page" do
+        stub_request(:get, "http://example.com").to_return(body: '<div><h1>500</h1></div>', status: 500)
+
+        $error_title = nil
+        Scruber.run :sample do
+          get "http://example.com", max_retry_times: 1
+
+          parse :html do |page,doc|
+            $error_title = doc.at('h1').text
+          end
+
+          on_page_error do |page|
+            $error_title = page.response_body
+            page.processed!
+          end
+        end
+        expect($error_title).to eq('<div><h1>500</h1></div>')
+      end
+
+      it "should process 404 error page" do
+        stub_request(:get, "http://example.com").to_return(body: '<div><h1>404</h1></div>', status: 404)
+
+        $error_title = nil
+        Scruber.run :sample do
+          get "http://example.com", max_retry_times: 1
+
+          parse :html do |page,doc|
+            $error_title = doc.at('h1').text
+          end
+
+          on_page_error do |page|
+            $error_title = page.response_body
+            page.processed!
+          end
+        end
+        expect($error_title).to eq('<div><h1>404</h1></div>')
+      end
+    end
   end
 
   describe "#root" do
