@@ -167,5 +167,10 @@ RSpec.shared_examples "queue_adapter" do
       expect(page1.id).not_to be_blank
       expect(page1.id).not_to eq(page2.id)
     end
+
+    it "should join url" do
+      page1 = page_class.new queue, url: "http://example.com/product1"
+      expect(page1.url_join('/abc')).to eq("http://example.com/abc")
+    end
   end
 end

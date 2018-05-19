@@ -60,7 +60,7 @@ module Scruber
       def on_complete_callback(page, response)
         page.response_code = response.code
         page.response_body = response.body
-        page.response_headers = response.response_headers
+        page.response_headers = response.headers
         page.response_total_time = response.total_time
         
         if response.timed_out?

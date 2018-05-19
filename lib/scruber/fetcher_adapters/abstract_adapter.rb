@@ -1,3 +1,5 @@
+require 'charlock_holmes'
+
 module Scruber
   module FetcherAdapters
     class AbstractAdapter
@@ -45,7 +47,22 @@ module Scruber
             page.fetched_at = Time.now.to_i
           end
         end
+        if page.response_headers
+          page.response_headers = page.response_headers.inject({}) {|acc, (k,v)| acc[k.gsub('.', '_')] = convert_to_utf8(v); acc }
+        end
+        page.response_body = convert_to_utf8(page.response_body)
         page
+      end
+
+      def convert_to_utf8(text)
+        unless text.to_s.empty?
+          detection = CharlockHolmes::EncodingDetector.detect(text)
+          if detection && detection[:encoding].present?
+            text = CharlockHolmes::Converter.convert(text, detection[:encoding], 'UTF-8') rescue text
+          end
+        end
+
+        text
       end
 
       def headers_for(page)

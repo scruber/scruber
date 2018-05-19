@@ -134,6 +134,16 @@ module Scruber
           raise NotImplementedError
         end
 
+
+        # 
+        # Join url of current page with another path or url
+        # @param link_url [String] link
+        # 
+        # @return [String] joined url
+        def url_join(link_url)
+          URI.join(url, link_url).to_s
+        end
+
         def [](k)
           instance_variable_get("@#{k.to_s}")
         end
