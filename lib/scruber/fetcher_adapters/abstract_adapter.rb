@@ -48,7 +48,7 @@ module Scruber
           end
         end
         if page.response_headers
-          page.response_headers = page.response_headers.inject({}) {|acc, (k,v)| acc[k.gsub('.', '_')] = convert_to_utf8(v); acc }
+          page.response_headers = page.response_headers.inject({}) {|acc, (k,v)| acc[k.gsub('.', '_')] = v.is_a?(Array) ? v.map{|v1| convert_to_utf8(v1) } : convert_to_utf8(v); acc }
         end
         page.response_body = convert_to_utf8(page.response_body)
         page
